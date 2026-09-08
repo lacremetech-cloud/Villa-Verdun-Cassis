@@ -6,6 +6,109 @@
 (function () {
   'use strict';
 
+  /* =====================================================================
+     FOND ANIMÉ DU HERO
+
+     Deux sources possibles, dans cet ordre de préférence :
+
+     1. HERO_VIDEO_MP4 — un fichier servi depuis le dépôt. C'est la
+        meilleure option : pas de tiers, pas de logo, contrôle total du
+        cadrage et de la boucle. À privilégier dès que des images
+        propres au bien seront disponibles.
+
+     2. HERO_VIDEO_ID — une vidéo YouTube intégrée via l'API officielle,
+        en domaine sans cookie. Nécessite l'accord de son auteur pour un
+        usage commercial.
+
+     Dans les deux cas la photo reste dessous : elle s'affiche tout de
+     suite et prend le relais si la vidéo ne démarre pas.
+     ===================================================================== */
+  var HERO_VIDEO_MP4   = '';                /* ex. 'assets/video/hero.mp4' */
+  var HERO_VIDEO_ID    = 'UE3kntZkW8o';     /* Cassis vue du ciel — Polychronis Film */
+  var HERO_VIDEO_START = 40;                /* secondes */
+
+  var heroVideo = document.getElementById('heroVideo');
+
+  function prefersStillImage() {
+    /* Animations désactivées, écran étroit, ou forfait en données réduites :
+       on garde la photo, qui est plus légère et tout aussi juste. */
+    if (!heroVideo) return true;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
+    if (window.matchMedia('(max-width: 760px)').matches) return true;
+    var c = navigator.connection;
+    if (c && (c.saveData || /^(slow-)?2g$/.test(c.effectiveType || ''))) return true;
+    return false;
+  }
+
+  function mountMp4() {
+    var v = document.createElement('video');
+    v.src = HERO_VIDEO_MP4;
+    v.muted = true; v.defaultMuted = true;
+    v.loop = true; v.autoplay = true; v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('preload', 'metadata');
+    v.addEventListener('playing', function () { heroVideo.classList.add('is-playing'); });
+    heroVideo.appendChild(v);
+    var p = v.play();
+    if (p && p.catch) p.catch(function () { /* refus d'autoplay : la photo reste */ });
+  }
+
+  var ytPlayer = null;
+
+  function mountYouTube() {
+    var holder = document.createElement('div');
+    holder.id = 'heroYt';
+    heroVideo.appendChild(holder);
+
+    window.onYouTubeIframeAPIReady = function () {
+      ytPlayer = new YT.Player('heroYt', {
+        videoId: HERO_VIDEO_ID,
+        host: 'https://www.youtube-nocookie.com',
+        playerVars: {
+          autoplay: 1, mute: 1, controls: 0, disablekb: 1,
+          start: HERO_VIDEO_START, playsinline: 1,
+          modestbranding: 1, rel: 0, fs: 0, iv_load_policy: 3
+        },
+        events: {
+          onReady: function (e) { e.target.mute(); e.target.playVideo(); },
+          onStateChange: function (e) {
+            if (e.data === YT.PlayerState.PLAYING) {
+              heroVideo.classList.add('is-playing');
+            } else if (e.data === YT.PlayerState.ENDED) {
+              /* Le paramètre loop repartirait de zéro : on revient au
+                 point de départ choisi. */
+              e.target.seekTo(HERO_VIDEO_START, true);
+              e.target.playVideo();
+            }
+          },
+          onError: function () { heroVideo.classList.remove('is-playing'); }
+        }
+      });
+    };
+
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    tag.async = true;
+    document.head.appendChild(tag);
+  }
+
+  if (!prefersStillImage()) {
+    if (HERO_VIDEO_MP4) mountMp4();
+    else if (HERO_VIDEO_ID) mountYouTube();
+  }
+
+  /* Le hero sort du champ : on met en pause pour épargner la batterie. */
+  if (heroVideo && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      var visible = entries[0].isIntersecting;
+      var v = heroVideo.querySelector('video');
+      if (v) { visible ? v.play().catch(function () {}) : v.pause(); }
+      else if (ytPlayer && ytPlayer.playVideo) {
+        visible ? ytPlayer.playVideo() : ytPlayer.pauseVideo();
+      }
+    }, { threshold: 0 }).observe(document.getElementById('hero'));
+  }
+
   /* ---------- Nav : état au scroll ---------- */
   var nav = document.getElementById('nav');
   function onScroll() {

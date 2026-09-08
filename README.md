@@ -27,6 +27,33 @@ et des volets. Typographie Cormorant Garamond (titres) et Jost (textes).
 Les polices sont servies depuis le dépôt — aucune requête vers Google Fonts,
 donc aucun transfert de données vers un tiers.
 
+## Fond animé du hero
+
+La photo aérienne reste la couche de base : elle s'affiche immédiatement, sert
+d'affiche pendant le chargement et de solution de repli. La vidéo se fond
+par-dessus une fois qu'elle joue réellement.
+
+Elle n'est pas chargée du tout sur mobile (moins de 761 px), quand l'utilisateur
+a désactivé les animations, ni sur connexion lente ou en mode données réduites.
+Elle se met en pause dès que le hero sort du champ.
+
+Deux sources possibles, réglées en tête de `main.js` :
+
+| Constante | Rôle |
+|---|---|
+| `HERO_VIDEO_MP4` | Fichier servi depuis le dépôt. **À privilégier** : aucun tiers, aucun logo, cadrage et boucle maîtrisés. Vide pour l'instant. |
+| `HERO_VIDEO_ID` | Vidéo YouTube, intégrée via l'API officielle en domaine sans cookie. Actuellement `UE3kntZkW8o`, à partir de 40 s. |
+
+Renseigner `HERO_VIDEO_MP4` suffit à basculer sur le fichier local : il prend
+automatiquement le pas sur YouTube.
+
+**Droits.** La vidéo `UE3kntZkW8o` — *CASSIS 🇫🇷 Drone Aerial 4K* — est l'œuvre de
+**Polychronis Film**. L'intégration YouTube est le seul usage légitime d'une vidéo
+tierce : elle reste servie par YouTube, l'auteur conserve attribution et
+monétisation. Un téléchargement suivi d'un ré-hébergement sur le site serait une
+contrefaçon. Pour un usage pleinement maîtrisé, il faut soit l'accord écrit de
+l'auteur, soit des images propres au bien.
+
 ## À renseigner avant mise en ligne
 
 | Élément | Emplacement |
