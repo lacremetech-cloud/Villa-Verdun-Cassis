@@ -200,7 +200,7 @@
         '</p>';
       if (CONTACT_EMAIL) {
         html += '<a class="btn btn--primary btn--block" href="mailto:' + CONTACT_EMAIL +
-          '?subject=Brochure%20Villa%20Verdun%20-%20Cassis">Demander la brochure par e-mail</a>';
+          '?subject=Brochure%20Villa%20Jean%20Jaures%20-%20Cassis">Demander la brochure par e-mail</a>';
       }
       if (CONTACT_WHATSAPP) {
         html += '<a class="btn btn--ghost btn--block" style="margin-top:10px" target="_blank" ' +

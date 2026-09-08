@@ -1,4 +1,4 @@
-# Villa Verdun — Cassis
+# Villa Jean Jaurès — Cassis
 
 Site de présentation et brochure premium du bien, sur le modèle de
 [chaletfontromeu](https://github.com/lacremetech-cloud/chaletfontromeu).
@@ -68,28 +68,52 @@ l'auteur, soit des images propres au bien.
 
 ## Points à trancher
 
-**Adresse.** L'état des risques et pollutions du 26/06/2026 (réf. 3739891) porte sur
-le **17 avenue de Verdun**, parcelle cadastrée **CL 58**. La description transmise
-indique **20 boulevard Jean Jaurès**. En attendant l'arbitrage, aucune adresse précise
-n'est publiée — ce qui correspond de toute façon à l'usage pour une diffusion
-confidentielle.
+**L'ERP ne correspond pas au bien.** L'état des risques et pollutions transmis
+(réf. 3739891 du 26/06/2026) porte sur le **17 avenue de Verdun**, parcelle
+cadastrée **CL 58**. Le bien est la **Villa Jean Jaurès**, boulevard Jean Jaurès.
+Deux adresses différentes : la page de synthèse ERP a donc été **retirée de la
+brochure**. À réintégrer si vous confirmez que le document couvre bien ce bien,
+ou à remplacer par le bon ERP.
 
-**Descriptions divergentes.** Deux descriptions du bien ont été fournies. La plus
-récente fait foi dans les textes actuels :
+**Surface.** L'annonce publique 1894 L'Immobilier (réf. 15919) indique
+**160 m²** et 5 pièces, comme la première description transmise. Une seconde
+description indiquait 170 m². C'est le chiffre de l'annonce qui est retenu.
 
 | | Première version | Version retenue |
 |---|---|---|
-| Surface | 160 m² | **170 m²** |
+| Surface | 160 m² | **160 m²** (annonce 1894) |
 | Chambres | 4 suites parentales | **4 chambres avec salle d'eau, dont 1 suite de plain-pied** |
 | Stationnement | places privatives | **1 place** |
 
-Repris de la première version faute de contradiction : parcelle de 400 m²,
-cave de 6 m², taxe foncière de 1 000 €, piscine en béton armé, garanties.
+**DPE.** Les deux valeurs publiées sont certaines : 154 kWh/m²/an et
+4 kgCO₂/m²/an. Les lettres affichées (**C** et **A**) en découlent par les seuils
+réglementaires. À confirmer sur le diagnostic lui-même avant diffusion large.
+
+## Photographies de Cassis
+
+Cinq vues libres de droits provenant de Wikimedia Commons complètent les
+photographies du bien, dans `assets/images/cassis/`. Les licences imposent
+d'en citer les auteurs : la mention figure en pied de page du site et en
+dernière page de la brochure. `assets/images/cassis/credits.json` conserve
+le détail (œuvre, auteur, licence, page source).
+
+| Fichier | Licence | Auteur |
+|---|---|---|
+| `cap-canaille-panorama.jpg` | CC BY-SA 4.0 | Chabe01 |
+| `calanque-en-vau.jpg` | CC BY-SA 4.0 | kallerna |
+| `calanque-port-miou.jpg` | CC BY-SA 4.0 | Chabe01 |
+| `plage-grande-mer.jpg` | CC BY-SA 4.0 | Chabe01 |
+| `port-de-cassis.jpg` | CC BY 3.0 | Jean-Christophe Benoist |
+
+Les images ont été redimensionnées et recadrées : ces versions dérivées restent
+sous la même licence que les originaux.
 
 ## Photographies manquantes
 
 Aucune vue de la cuisine d'été ni de la cave. Toutes les vues intérieures montrent
-la maison vide.
+la maison vide. La vue du village transmise (`cassis-cap-canaille.jpg`, 1066 px de
+large) était trop petite pour un usage pleine largeur : elle a été remplacée par
+les vues libres de droits ci-dessus.
 
 ## Logo
 

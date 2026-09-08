@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Brochure confidentielle · Villa Verdun, maison de ville d'exception à vendre à Cassis. 170 m² entièrement rénovés en 2026, quatre chambres, piscine, cuisine d'été, vue Cap Canaille." />
+<meta name="description" content="Brochure confidentielle · Villa Jean Jaurès, maison de ville d'exception à vendre à Cassis. 160 m² entièrement rénovés en 2026, quatre chambres, piscine, cuisine d'été, vue Cap Canaille. 1 490 000 €." />
 <meta name="robots" content="noindex, nofollow" />
-<title>Villa Verdun · Cassis · Brochure confidentielle</title>
+<title>Villa Jean Jaurès · Cassis · Brochure confidentielle</title>
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
 <style>
 @font-face {
@@ -170,16 +170,24 @@
 }
 
 :root {
-  --bg: #F6F4EF;
-  --paper: #FBFAF7;
+  --bg: #F7F5F0;
+  --paper: #FFFFFF;
   --fg: #22333F;
-  --muted: rgba(34,51,63,.66);
+  --muted: rgba(34,51,63,.68);
   --soft: rgba(34,51,63,.45);
   --accent: #5C7488;
   --accent-light: #A9BCCB;
-  --accent-deep: #3A5163;
+  --accent-pale: #E7EDF2;
+  --terracotta: #C46A3C;
+  --terracotta-pale: #FBEDE4;
+  --olive: #6F7551;
+  --olive-pale: #EEF0E4;
+  --turquoise: #3E8E96;
+  --turquoise-pale: #E3F1F1;
+  --sable: #B99A6B;
+  --sable-pale: #F7EFE1;
   --dark: #2E3D4A;
-  --border: rgba(34,51,63,.16);
+  --border: rgba(34,51,63,.15);
   --serif: 'Cormorant Garamond', 'Times New Roman', serif;
   --sans: 'Jost', -apple-system, sans-serif;
   --scale: 1;
@@ -188,56 +196,48 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #46525C; }
 body {
-  font-family: var(--sans);
-  color: var(--fg);
-  font-size: 10.5pt;
-  line-height: 1.6;
-  font-weight: 300;
-  padding: 1.25rem 1rem 7rem;
-  -webkit-font-smoothing: antialiased;
+  font-family: var(--sans); color: var(--fg);
+  font-size: 10.5pt; line-height: 1.6; font-weight: 300;
+  padding: 1.25rem 1rem 7rem; -webkit-font-smoothing: antialiased;
 }
 img { display: block; max-width: 100%; }
+svg { display: block; }
 
 .brochure { max-width: 210mm; margin: 0 auto; position: relative; }
 
 .page {
-  width: 210mm;
-  height: 297mm;
-  margin: 0 auto;
-  /* compense en flux le vide laisse par la reduction visuelle */
+  width: 210mm; height: 297mm; margin: 0 auto;
   margin-bottom: calc(1.5rem - (1 - var(--scale)) * 297mm);
-  background: var(--bg);
-  position: relative;
-  overflow: hidden;
+  background: var(--bg); position: relative; overflow: hidden;
   box-shadow: 0 16px 48px rgba(0,0,0,.42);
-  padding: 22mm 20mm 26mm;
-  display: none;
-  page-break-after: always;
-  transform: scale(var(--scale));
-  transform-origin: top center;
-  animation: pageIn 300ms ease-out;
+  padding: 20mm 18mm 24mm;
+  display: none; page-break-after: always;
+  transform: scale(var(--scale)); transform-origin: top center;
 }
 .page.is-active { display: block; }
 .page:last-child { page-break-after: auto; }
-@keyframes pageIn { from { opacity: 0; transform: scale(var(--scale)) translateY(8px); } }
+
+/* filet de couleur en tête de page, catégorie par catégorie */
+.page::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: var(--tint, var(--accent));
+}
+.page.cover::before { display: none; }
 
 /* ---------- typographie ---------- */
 .eyebrow {
-  font-size: 7.5pt; letter-spacing: .32em; text-transform: uppercase;
-  color: var(--accent); font-weight: 500; margin-bottom: .7rem;
+  font-size: 7.5pt; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--tint, var(--accent)); font-weight: 500; margin-bottom: .6rem;
 }
-.h1, .h2, .h3 {
-  font-family: var(--serif); font-weight: 400; line-height: 1.04;
-  letter-spacing: -.008em; color: var(--fg);
-}
-.h1 { font-size: 42pt; }
-.h2 { font-size: 27pt; margin-bottom: .9rem; }
-.h3 { font-size: 13pt; margin-bottom: .3rem; letter-spacing: 0; }
-.italic { font-style: italic; color: var(--accent); }
-.rule { width: 56px; height: 1px; background: var(--accent); margin: .9rem 0 1.4rem; }
-.body { color: var(--muted); margin-bottom: .8rem; }
+.h1, .h2, .h3 { font-family: var(--serif); font-weight: 400; line-height: 1.04; color: var(--fg); }
+.h2 { font-size: 26pt; margin-bottom: .8rem; }
+.h3 { font-size: 12.5pt; margin-bottom: .25rem; line-height: 1.2; }
+.italic { font-style: italic; color: var(--tint, var(--accent)); }
+.rule { width: 52px; height: 2px; background: var(--tint, var(--accent)); margin: .8rem 0 1.3rem; }
+.body { color: var(--muted); margin-bottom: .7rem; }
 .body strong { font-weight: 500; color: var(--fg); }
-.lead { font-size: 12pt; line-height: 1.7; color: var(--fg); }
+.lead { font-size: 11.5pt; line-height: 1.7; color: var(--fg); }
+.hl { color: var(--tint, var(--accent)); font-weight: 500; }
 
 /* ---------- couverture ---------- */
 .cover { padding: 0; background: var(--dark); }
@@ -245,128 +245,123 @@ img { display: block; max-width: 100%; }
 .cover__img img { width: 100%; height: 100%; object-fit: cover; }
 .cover__scrim {
   position: absolute; inset: 0;
-  background:
-    linear-gradient(to top, rgba(20,31,39,.92) 0%, rgba(20,31,39,.42) 46%, rgba(20,31,39,.14) 74%, rgba(20,31,39,.48) 100%);
+  background: linear-gradient(to top, rgba(20,31,39,.93) 0%, rgba(20,31,39,.40) 46%, rgba(20,31,39,.12) 72%, rgba(20,31,39,.50) 100%);
 }
-.cover__inner {
-  position: absolute; inset: 0; padding: 26mm 20mm;
-  display: flex; flex-direction: column; justify-content: space-between;
+.cover__inner { position: absolute; inset: 0; padding: 24mm 18mm; display: flex; flex-direction: column; justify-content: space-between; }
+.cover__brand small { display: block; font-size: 7pt; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.75); margin-top: 4px; }
+.cover__pill {
+  display: inline-flex; align-items: center; gap: 2mm; width: fit-content;
+  padding: 2mm 4.5mm; border: 1px solid rgba(255,255,255,.45); border-radius: 100px;
+  font-size: 7.5pt; letter-spacing: .2em; text-transform: uppercase; color: #fff; margin-bottom: 5mm;
 }
-.cover__brand { font-family: var(--serif); font-size: 13pt; letter-spacing: .3em; color: #fff; }
-.cover__brand small { display: block; font-family: var(--sans); font-size: 7pt; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.72); margin-top: 4px; }
-.cover__place {
-  font-size: 9pt; letter-spacing: .3em; text-transform: uppercase; color: #fff;
-  margin-bottom: .8rem; position: relative; padding-left: 46px;
-}
-.cover__place::before { content: ""; position: absolute; left: 0; top: 50%; width: 34px; height: 1px; background: var(--accent-light); }
-.cover__title { font-family: var(--serif); font-size: 52pt; font-weight: 400; line-height: .96; color: #fff; }
+.cover__pill .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-light); }
+.cover__title { font-family: var(--serif); font-size: 40pt; font-weight: 500; line-height: 1; color: #fff; text-transform: uppercase; letter-spacing: .01em; }
 .cover__title em { font-style: italic; color: var(--accent-light); }
-.cover__sub { font-size: 10.5pt; color: rgba(255,255,255,.84); max-width: 46ch; margin-top: 1rem; }
-.cover__meta { font-size: 7.5pt; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.62); margin-top: 1.6rem; }
+.cover__sub { font-size: 10.5pt; color: rgba(255,255,255,.86); max-width: 48ch; margin-top: 4mm; }
+.cover__price { font-family: var(--serif); font-size: 19pt; color: #fff; margin-top: 6mm; }
+.cover__price small { font-family: var(--sans); font-size: 7.5pt; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.7); display: block; margin-bottom: 1mm; }
+.cover__meta { font-size: 7pt; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-top: 5mm; }
 
 /* ---------- images ---------- */
-.figure { position: relative; overflow: hidden; }
+.figure { position: relative; overflow: hidden; border-radius: 2px; }
 .figure img { width: 100%; height: 100%; object-fit: cover; }
-.figure__cap {
-  font-size: 7pt; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--soft); margin-top: .4rem;
-}
-.bleed { margin-left: -20mm; margin-right: -20mm; width: calc(100% + 40mm); }
-.bleed-top { margin-top: -22mm; }
+.figure__cap { font-size: 7pt; letter-spacing: .16em; text-transform: uppercase; color: var(--soft); margin-top: 1.5mm; }
+.bleed { margin-left: -18mm; margin-right: -18mm; width: calc(100% + 36mm); border-radius: 0; }
+.bleed-top { margin-top: -20mm; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+.grid-2-3 { display: grid; grid-template-columns: 1.1fr .9fr; gap: 6mm; align-items: start; }
 
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
-.grid-2-3 { display: grid; grid-template-columns: 1.15fr .85fr; gap: 6mm; align-items: start; }
-
-/* ---------- huit evidences ---------- */
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin-top: 1rem; }
-.stat { background: var(--paper); border: 1px solid var(--border); padding: 6mm 5mm; min-height: 30mm; display: flex; flex-direction: column; justify-content: flex-end; }
-.stat--dark { background: var(--dark); border-color: var(--dark); }
-.stat--wide { grid-column: span 2; }
-.stat__k { font-family: var(--serif); font-size: 22pt; line-height: 1; color: var(--fg); margin-bottom: .3rem; }
+/* ---------- chiffres à icône ---------- */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; }
+.stat { background: var(--paper); border: 1px solid var(--border); border-radius: 2px; padding: 5mm 4mm; }
+.stat__i { color: var(--tint, var(--accent)); margin-bottom: 3mm; }
+.stat__k { font-family: var(--serif); font-size: 20pt; line-height: 1; color: var(--fg); margin-bottom: 1mm; }
 .stat__k span { font-size: .5em; }
-.stat__l { font-size: 7pt; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-.stat--dark .stat__k { color: var(--bg); }
-.stat--dark .stat__l { color: var(--accent-light); }
+.stat__l { font-size: 6.8pt; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.stat--fill { background: var(--tint, var(--accent)); border-color: var(--tint, var(--accent)); }
+.stat--fill .stat__i, .stat--fill .stat__k { color: #fff; }
+.stat--fill .stat__l { color: rgba(255,255,255,.82); }
+
+/* ---------- cartes à icône ---------- */
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.card { background: var(--paper); border: 1px solid var(--border); border-radius: 2px; padding: 5mm; }
+.card__i { color: var(--c, var(--accent)); margin-bottom: 2.5mm; }
+.card__t { font-family: var(--serif); font-size: 12.5pt; color: var(--fg); margin-bottom: 1mm; }
+.card__p { font-size: 8.8pt; line-height: 1.55; color: var(--muted); }
+
+/* ---------- cartes à liseré (saisons, ambiances) ---------- */
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.tile { background: var(--paper); border: 1px solid var(--border); border-left: 3px solid var(--c, var(--accent)); border-radius: 2px; padding: 4.5mm 5mm; }
+.tile__t { font-family: var(--serif); font-size: 12.5pt; color: var(--c, var(--accent)); margin-bottom: 1.5mm; }
+.tile ul { list-style: none; }
+.tile li { font-size: 8.6pt; line-height: 1.5; color: var(--muted); padding-left: 4mm; position: relative; }
+.tile li::before { content: ''; position: absolute; left: 0; top: .62em; width: 2mm; height: 1px; background: var(--c, var(--accent)); }
 
 /* ---------- listes et tableaux ---------- */
 .rows { list-style: none; border-top: 1px solid var(--border); }
-.rows li {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 8mm;
-  padding: 2.6mm 0; border-bottom: 1px solid var(--border);
-}
-/* variante compacte pour les longues listes */
-.rows--tight li { padding: 1.9mm 0; }
-.rows--tight .rows__k { font-size: 7pt; }
-.rows--tight .rows__v { font-size: 9pt; }
-.rows__k { font-size: 7.5pt; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-.rows__v { font-size: 10pt; color: var(--fg); text-align: right; }
-
+.rows li { display: flex; justify-content: space-between; align-items: baseline; gap: 6mm; padding: 2.3mm 0; border-bottom: 1px solid var(--border); }
+.rows--tight li { padding: 1.7mm 0; }
+.rows__k { font-size: 7.2pt; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.rows__v { font-size: 9.5pt; color: var(--fg); text-align: right; }
 .checks { list-style: none; }
-.checks li { position: relative; padding-left: 7mm; margin-bottom: 2.4mm; color: var(--muted); }
-.checks li::before {
-  content: ""; position: absolute; left: 0; top: .62em;
-  width: 3.4mm; height: 1px; background: var(--accent);
-}
+.checks li { position: relative; padding-left: 6mm; margin-bottom: 2mm; color: var(--muted); font-size: 9pt; }
+.checks li::before { content: ''; position: absolute; left: 0; top: .58em; width: 3mm; height: 1px; background: var(--tint, var(--accent)); }
 
-.notes { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm 8mm; margin-top: 1rem; }
-.note__t { font-family: var(--serif); font-size: 13pt; color: var(--fg); margin-bottom: .2rem; }
-.note__p { font-size: 9.5pt; color: var(--muted); line-height: 1.6; }
+/* ---------- panneaux ---------- */
+.panel { border-radius: 2px; padding: 6mm; }
+.panel--pale { background: var(--tintPale, var(--accent-pale)); border: 1px solid var(--border); }
+.panel--dark { background: var(--dark); color: var(--bg); }
+.panel--dark .card__t, .panel--dark .h3 { color: var(--bg); }
+.panel--dark .body { color: rgba(247,245,240,.76); }
 
-.steps { list-style: none; margin-top: 1rem; }
-.steps li { display: flex; gap: 6mm; padding: 4.5mm 0; border-bottom: 1px solid var(--border); }
-.steps__n { font-family: var(--serif); font-size: 20pt; line-height: 1; color: var(--accent); min-width: 14mm; }
-.steps__t { font-family: var(--serif); font-size: 14pt; color: var(--fg); margin-bottom: .15rem; }
-.steps__p { font-size: 9.5pt; color: var(--muted); line-height: 1.6; }
+/* ---------- prix ---------- */
+.price { background: var(--dark); border-radius: 2px; padding: 8mm; color: #fff; }
+.price__l { font-size: 7.5pt; letter-spacing: .24em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 2mm; }
+.price__v { font-family: var(--serif); font-size: 34pt; line-height: 1; }
+.price__n { font-size: 8.5pt; color: rgba(255,255,255,.72); margin-top: 3mm; }
 
-.panel { background: var(--paper); border: 1px solid var(--border); padding: 7mm 6mm; }
-.panel--dark { background: var(--dark); border-color: var(--dark); color: var(--bg); }
-.panel--dark .h3, .panel--dark .stat__k { color: var(--bg); }
-.panel--dark .body { color: rgba(246,244,239,.74); }
+/* ---------- étiquettes énergie ---------- */
+.scale { display: flex; flex-direction: column; gap: 1.4mm; }
+.scale__row { display: flex; align-items: center; gap: 2.5mm; }
+.scale__ltr { width: 5mm; font-family: var(--serif); font-size: 11pt; color: var(--muted); text-align: center; }
+.scale__bar { height: 6.5mm; border-radius: 1px; display: flex; align-items: center; padding: 0 2mm; font-size: 6.6pt; color: rgba(0,0,0,.62); letter-spacing: .06em; }
+.scale__row.is-on .scale__ltr { color: var(--fg); font-size: 13pt; }
+.scale__mark { margin-left: 2.5mm; font-size: 7.5pt; letter-spacing: .14em; text-transform: uppercase; color: var(--fg); font-weight: 500; white-space: nowrap; }
+.scale__cap { font-size: 7pt; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); margin-bottom: 2.5mm; }
+
+/* ---------- étapes ---------- */
+.steps { list-style: none; }
+.steps li { display: flex; gap: 5mm; padding: 3.6mm 0; border-bottom: 1px solid var(--border); }
+.steps__n { font-family: var(--serif); font-size: 18pt; line-height: 1; color: var(--tint, var(--accent)); min-width: 12mm; }
+.steps__t { font-family: var(--serif); font-size: 13pt; color: var(--fg); }
+.steps__p { font-size: 8.8pt; line-height: 1.55; color: var(--muted); }
 
 /* ---------- pied de page ---------- */
-.page-num {
-  position: absolute; bottom: 12mm; right: 20mm;
-  font-size: 7.5pt; letter-spacing: .3em; color: var(--soft);
-}
-.page-brand {
-  position: absolute; bottom: 12mm; left: 20mm;
-  font-size: 7pt; letter-spacing: .22em; text-transform: uppercase; color: var(--soft);
-}
+.page-num { position: absolute; bottom: 11mm; right: 18mm; font-size: 7.2pt; letter-spacing: .3em; color: var(--soft); }
+.page-brand { position: absolute; bottom: 11mm; left: 18mm; font-size: 6.8pt; letter-spacing: .22em; text-transform: uppercase; color: var(--soft); }
 
-/* ---------- barre de navigation (ecran) ---------- */
+/* ---------- barre de navigation (écran) ---------- */
 .bar {
-  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
-  z-index: 20; display: flex; align-items: center; gap: 6px;
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 20;
+  display: flex; align-items: center; gap: 6px;
   background: rgba(26,36,44,.94); backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,.14); border-radius: 100px;
   padding: 7px 10px; box-shadow: 0 12px 36px rgba(0,0,0,.4);
 }
-.bar__btn {
-  width: 34px; height: 34px; border-radius: 50%; border: 0;
-  background: rgba(255,255,255,.1); color: #fff;
-  display: flex; align-items: center; justify-content: center; cursor: pointer;
-  transition: background 160ms ease-out;
-}
+.bar__btn { width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(255,255,255,.1); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 160ms ease-out; }
 .bar__btn:hover:not(:disabled) { background: rgba(255,255,255,.24); }
 .bar__btn:disabled { opacity: .3; cursor: default; }
 .bar__btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; }
 .bar__count { font-size: 11px; letter-spacing: .2em; color: rgba(255,255,255,.8); padding: 0 10px; min-width: 74px; text-align: center; }
 .bar__sep { width: 1px; height: 20px; background: rgba(255,255,255,.16); margin: 0 2px; }
-.bar__link {
-  font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase;
-  color: #fff; text-decoration: none; padding: 0 12px;
-}
+.bar__link { font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #fff; text-decoration: none; padding: 0 12px; }
 .bar__link:hover { color: var(--accent-light); }
 
 @media print {
   html, body { background: #fff; }
   body { padding: 0; }
-  .page {
-    display: block !important; box-shadow: none; margin: 0;
-    transform: none; animation: none;
-    width: 210mm; height: 297mm;
-  }
+  .page { display: block !important; box-shadow: none; margin: 0; transform: none; width: 210mm; height: 297mm; }
   .bar { display: none !important; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
@@ -378,276 +373,322 @@ img { display: block; max-width: 100%; }
 
 <div class="brochure" id="brochure">
 <section class="page cover is-active" data-page="1">
-
-  <div class="cover__img"><img src="../assets/images/vue-aerienne-mer.jpg" alt="La Villa Verdun, les toits de Cassis et la Méditerranée" /></div>
+  <div class="cover__img"><img src="../assets/images/vue-aerienne-mer.jpg" alt="La villa vue du ciel, les toits de Cassis et la Méditerranée" /></div>
   <div class="cover__scrim"></div>
   <div class="cover__inner">
     <div class="cover__brand">
-      <img src="../assets/brand/prodigio-blanc.png" alt="Prodigio" style="width:46mm;height:auto" />
+      <img src="../assets/brand/prodigio-blanc.png" alt="Prodigio" style="width:44mm;height:auto" />
       <small>Immobilier d'exception</small>
     </div>
     <div>
-      <div class="cover__place">Cassis · Bouches-du-Rhône · Provence</div>
-      <h1 class="cover__title">Villa <em>Verdun</em></h1>
+      <div class="cover__pill"><span class="dot"></span>Cassis · Bouches-du-Rhône · Provence</div>
+      <h1 class="cover__title">Villa<br /><em>Jean Jaurès</em></h1>
       <p class="cover__sub">
         Maison de ville entièrement rénovée en 2026, au pied du Cap Canaille
-        et à quelques pas du port. 170 m² habitables, quatre chambres,
+        et à quelques pas du port. Quatre chambres, autant de salles d'eau,
         piscine et cuisine d'été.
       </p>
+      <div class="cover__price"><small>Prix de vente</small>1 490 000 €</div>
       <div class="cover__meta">Brochure confidentielle · Document non contractuel</div>
     </div>
   </div>
 </section>
-<section class="page" data-page="2">
+<section class="page" data-page="2" style="--tint:#3E8E96">
 
   <div class="eyebrow">L'esprit du lieu</div>
   <h2 class="h2">Un pied dans le village,<br />l'autre dans les <span class="italic">calanques</span>.</h2>
   <div class="rule"></div>
   <p class="lead body">
-    Il y a des adresses qui dispensent de tout commentaire. L'adresse de la Villa Verdun
-    est de celles-là : le port se rejoint à pied, le marché aussi, et la plage encore.
-    Derrière, le Cap Canaille ferme l'horizon de sa falaise rouge, la plus haute
-    d'Europe à tomber dans la mer.
+    Il y a des adresses qui dispensent de tout commentaire. Celle-ci est de
+    celles-là : <span class="hl">le port se rejoint à pied</span>, le marché aussi,
+    et la plage encore. Derrière, le Cap Canaille ferme l'horizon de sa falaise
+    rouge, la plus haute d'Europe à tomber dans la mer.
   </p>
   <p class="body">
-    La Villa Verdun occupe cette position rare sans la revendiquer. De la rue, c'est une
-    maison de ville provençale, volets clairs et tuiles rondes. Passé le seuil, c'est
-    autre chose : cent soixante-dix mètres carrés entièrement repris en 2026, où l'on a
-    gardé les poutres, la pierre et la hauteur, et changé tout le reste.
+    De la rue, c'est une maison de ville provençale, volets clairs et tuiles rondes.
+    Passé le seuil, c'est autre chose : cent soixante mètres carrés entièrement
+    repris en 2026, où l'on a gardé les poutres, la pierre et la hauteur, et changé
+    tout le reste.
   </p>
-  <p class="body">
-    Le charme de l'ancien, donc. Mais avec les réseaux neufs, l'isolation neuve, les
-    menuiseries neuves, la climatisation, et la garantie décennale par-dessus.
-  </p>
-<div style="margin-top:8mm"><div class="figure" style="height:78mm"><img src="../assets/images/piscine-jardin.jpg" alt="La piscine et le jardin paysagé" /></div><div class="figure__cap">Le jardin paysagé, ses terrasses en pierre et la piscine</div></div>
+  <div class="figure" style="height:84mm"><img src="../assets/images/piscine-jardin.jpg" alt="La piscine et le jardin paysagé" /></div>
+  <div class="cards" style="margin-top:6mm">
+    <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M8 8h8"/><circle cx="12" cy="4" r="1.5"/><path d="M4 14a8 8 0 0016 0"/></svg></div><div class="card__t">Le port à pied</div><div class="card__p">Restaurants, terrasses et marché se rejoignent sans prendre la voiture.</div></div>
+    <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L21 2M17 6l3 3M14 9l3 3"/></svg></div><div class="card__t">Rien à faire</div><div class="card__p">Rénovation intégrale livrée en 2026, garanties constructeur incluses.</div></div>
+  </div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">02</div>
 </section>
-<section class="page" data-page="3">
+<section class="page" data-page="3" style="--tint:#5C7488">
 
   <div class="eyebrow">La carte d'identité</div>
-  <h2 class="h2">Huit <span class="italic">évidences</span>.</h2>
+  <h2 class="h2">Le bien en <span class="italic">chiffres</span>.</h2>
   <div class="rule"></div>
   <p class="body" style="max-width:62ch">
-    Ce que la maison offre, en un coup d'œil. Le détail des surfaces et des prestations
-    figure en fin de dossier.
+    Ce que la maison offre, en un coup d'œil. Le détail des surfaces et des
+    prestations figure page 14.
   </p>
-  <div class="stats">
-    <div class="stat"><div class="stat__k">170 <span>m²</span></div><div class="stat__l">Habitables</div></div>
-    <div class="stat"><div class="stat__k">400 <span>m²</span></div><div class="stat__l">De parcelle</div></div>
-    <div class="stat"><div class="stat__k">4</div><div class="stat__l">Chambres, 4 salles d'eau</div></div>
-    <div class="stat"><div class="stat__k">50 <span>m²</span></div><div class="stat__l">De pièce de vie</div></div>
-    <div class="stat stat--dark"><div class="stat__k">2026</div><div class="stat__l">Rénovation intégrale</div></div>
-    <div class="stat"><div class="stat__k">Vue mer</div><div class="stat__l">Depuis la mezzanine</div></div>
-    <div class="stat"><div class="stat__k">À pied</div><div class="stat__l">Port, marché et plage</div></div>
-    <div class="stat"><div class="stat__k">Piscine</div><div class="stat__l">Et cuisine d'été</div></div>
+  <div class="stats" style="margin-top:5mm">
+    <div class="stat"><div class="stat__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 3v18"/></svg></div><div class="stat__k">160 <span>m²</span></div><div class="stat__l">Habitables</div></div>
+    <div class="stat"><div class="stat__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 6v13H3V8z"/><path d="M9 21v-7h6v7"/></svg></div><div class="stat__k">400 <span>m²</span></div><div class="stat__l">De parcelle</div></div>
+    <div class="stat"><div class="stat__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18V9a2 2 0 012-2h14a2 2 0 012 2v9"/><path d="M3 14h18M7 7V5h10v2"/></svg></div><div class="stat__k">4</div><div class="stat__l">Chambres, 4 salles d'eau</div></div>
+    <div class="stat"><div class="stat__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-6a2 2 0 012-2h12a2 2 0 012 2v6"/><path d="M2 18h20M6 10V7a2 2 0 012-2h8a2 2 0 012 2v3"/></svg></div><div class="stat__k">50 <span>m²</span></div><div class="stat__l">De pièce de vie</div></div>
   </div>
-<div style="margin-top:7mm"><div class="figure" style="height:62mm"><img src="../assets/images/cassis-cap-canaille.jpg" alt="Cassis et le Cap Canaille" /></div><div class="figure__cap">Cassis, son clocher et le Cap Canaille</div></div>
+  <div class="stats" style="margin-top:3mm">
+    <div class="stat stat--fill"><div class="stat__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L21 2M17 6l3 3M14 9l3 3"/></svg></div><div class="stat__k">2026</div><div class="stat__l">Rénovation intégrale</div></div>
+    <div class="stat"><div class="stat__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5l-2 6h6l-8 8 2-6H5z"/></svg></div><div class="stat__k">À pied</div><div class="stat__l">Port, marché et plage</div></div>
+    <div class="stat"><div class="stat__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><path d="M7 15V5a2 2 0 014 0v10M13 15V5a2 2 0 014 0v10M7 8h10M7 11h10"/></svg></div><div class="stat__k">Oui</div><div class="stat__l">Piscine et cuisine d'été</div></div>
+    <div class="stat"><div class="stat__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20c1.5 0 1.5-1.2 3-1.2s1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2"/><path d="M2 14l10-9 10 9"/></svg></div><div class="stat__k">Vue mer</div><div class="stat__l">Depuis la mezzanine</div></div>
+  </div>
+  <div class="figure" style="height:56mm"><img src="../assets/images/cassis/cap-canaille-panorama.jpg" alt="Le Cap Canaille et la baie de Cassis" /></div>
+  <div class="figure__cap">Le Cap Canaille, plus haute falaise maritime de France</div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">03</div>
 </section>
-<section class="page" data-page="4">
-<div class="figure bleed bleed-top" style="height:112mm"><img src="../assets/images/reception-charpente.jpg" alt="La pièce de vie sous charpente" /></div>
-  <div style="margin-top:9mm">
+<section class="page" data-page="4" style="--tint:#B99A6B">
+
+  <div class="figure bleed bleed-top" style="height:108mm"><img src="../assets/images/reception-charpente.jpg" alt="La pièce de vie sous charpente" /></div>
+  <div style="margin-top:8mm">
     <div class="eyebrow">Le rez-de-chaussée</div>
     <h2 class="h2">Cinquante mètres carrés<br />d'un seul <span class="italic">tenant</span>.</h2>
     <div class="rule"></div>
     <p class="body">
-      Pas de couloir, pas de cloison inutile : la pièce de vie s'ouvre dès l'entrée et
-      file jusqu'à la cuisine. La hauteur sous plafond et les poutres apparentes lui
-      donnent l'ampleur ; le parquet en chêne massif, posé en point de Hongrie, lui
-      donne la chaleur.
+      Pas de couloir, pas de cloison inutile : la pièce de vie s'ouvre dès l'entrée
+      et file jusqu'à la cuisine. La hauteur sous plafond et les poutres apparentes
+      lui donnent l'ampleur ; le <span class="hl">parquet en chêne massif, posé en
+      point de Hongrie</span>, lui donne la chaleur.
     </p>
-    <p class="body">
-      Une cheminée à insert tient le fond de la pièce. L'hiver, elle suffit. L'été, la
-      climatisation prend le relais dans toute la maison.
-    </p>
+    <div class="cards" style="margin-top:5mm">
+      <div class="card" style="--c:#B99A6B"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4 0 7-2.7 7-6.5 0-4.5-5-6.5-4-11.5-3 1-6 4.5-6 8 0-1.5-1-2.5-1-2.5-1 1.5-3 3.5-3 6C5 19.3 8 22 12 22z"/></svg></div><div class="card__t">Cheminée à insert</div><div class="card__p">Elle tient le fond de la pièce. L'hiver, elle suffit.</div></div>
+      <div class="card" style="--c:#B99A6B"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="8" rx="2"/><path d="M6 17v2M12 17v3M18 17v2M5 9h14"/></svg></div><div class="card__t">Climatisation</div><div class="card__p">Dans toute la maison, pour les mois où le soleil ne faiblit pas.</div></div>
+    </div>
   </div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">04</div>
 </section>
-<section class="page" data-page="5">
+<section class="page" data-page="5" style="--tint:#B99A6B">
 
-  <div class="eyebrow">Les matières</div>
+  <div class="eyebrow">Architecture · Matériaux</div>
   <h2 class="h2">Ce que l'on garde,<br />ce que l'on <span class="italic">refait</span>.</h2>
   <div class="rule"></div>
   <div class="grid-2-3">
+    <div><div class="figure" style="height:118mm"><img src="../assets/images/charpente-lanternes.jpg" alt="Charpente peinte, pierre de taille apparente et suspensions en papier" /></div></div>
     <div>
-<div class="figure" style="height:132mm"><img src="../assets/images/charpente-lanternes.jpg" alt="Charpente peinte, pierre de taille apparente et suspensions en papier" /></div>
-    </div>
-    <div>
-      <p class="body">
-        La pierre de taille est restée nue là où elle méritait de l'être. La charpente a
-        été mise en peinture claire plutôt que masquée. Le résultat tient en une phrase :
-        on lit l'âge de la maison, on ne subit rien de ses défauts.
+      <p class="body" style="font-size:9.5pt">
+        La pierre de taille est restée nue là où elle méritait de l'être. La charpente
+        a été mise en peinture claire plutôt que masquée. On lit l'âge de la maison,
+        on ne subit rien de ses défauts.
       </p>
-      <ul class="checks" style="margin-top:6mm">
-        <li><strong>Conservé</strong> : poutres, charpente, pierre apparente, hauteur sous plafond</li>
-        <li><strong>Refait</strong> : réseaux électriques et sanitaires</li>
+      <ul class="checks" style="margin-top:4mm">
+        <li><strong>Conservé</strong> : poutres et charpente</li>
+        <li><strong>Conservé</strong> : pierre de taille apparente</li>
+        <li><strong>Conservé</strong> : hauteur sous plafond</li>
+        <li><strong>Refait</strong> : réseaux et sanitaires</li>
         <li><strong>Refait</strong> : isolation et menuiseries</li>
-        <li><strong>Refait</strong> : sols en chêne massif, point de Hongrie</li>
-        <li><strong>Ajouté</strong> : climatisation dans toute la maison</li>
-        <li><strong>Ajouté</strong> : quatre salles d'eau neuves</li>
+        <li><strong>Refait</strong> : sols en chêne massif</li>
+        <li><strong>Ajouté</strong> : climatisation</li>
+        <li><strong>Ajouté</strong> : quatre salles d'eau</li>
       </ul>
     </div>
+  </div>
+  <div class="cards" style="margin-top:5mm">
+    <div class="card" style="--c:#B99A6B"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 4c0 5 0 11 0 16M12 4c0 5 0 11 0 16M16 4c0 5 0 11 0 16"/></svg></div><div class="card__t">Chêne massif</div><div class="card__p">Posé en point de Hongrie dans les pièces de vie et les chambres.</div></div>
+    <div class="card" style="--c:#B99A6B"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h7v5H3zM10 8h11v5H10zM3 13h11v5H3zM14 13h7v5h-7z"/></svg></div><div class="card__t">Pierre de taille</div><div class="card__p">Le mur d'origine, nettoyé et laissé apparent dans la pièce de vie.</div></div>
   </div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">05</div>
 </section>
-<section class="page" data-page="6">
+<section class="page" data-page="6" style="--tint:#5C7488">
 
   <div class="eyebrow">La cuisine</div>
   <h2 class="h2">Ouverte,<br />et <span class="italic">équipée</span>.</h2>
   <div class="rule"></div>
-  <p class="body" style="max-width:64ch">
-    Elle prolonge la pièce de vie sans la couper : on cuisine avec les autres, pas à
-    côté d'eux. Façades bleu pétrole sous l'arche de plâtre, plan de travail pleine
-    longueur, électroménager intégré. La vue reste dégagée depuis l'évier.
+  <p class="body" style="max-width:62ch">
+    Elle prolonge la pièce de vie sans la couper : on cuisine avec les autres, pas
+    à côté d'eux. Façades bleu pétrole sous l'arche de plâtre, plan de travail
+    pleine longueur, électroménager intégré. La vue reste dégagée depuis l'évier.
   </p>
-<div style="margin-top:7mm"><div class="figure" style="height:96mm"><img src="../assets/images/cuisine-bleue.jpg" alt="La cuisine ouverte, façades bleu pétrole" /></div></div><div style="margin-top:5mm"><div class="figure" style="height:62mm"><img src="../assets/images/reception-mur-pierre.jpg" alt="Le mur en pierre apparente et les ouvertures sur les collines" /></div><div class="figure__cap">Depuis la cuisine, la pièce de vie et son mur de pierre</div></div>
+  <div class="figure" style="height:92mm"><img src="../assets/images/cuisine-bleue.jpg" alt="La cuisine ouverte, façades bleu pétrole" /></div>
+  <div style="margin-top:4mm"><div class="figure" style="height:62mm"><img src="../assets/images/reception-mur-pierre.jpg" alt="Le mur en pierre apparente et les ouvertures sur les collines" /></div></div>
+  <div class="figure__cap">Depuis la cuisine, la pièce de vie et son mur de pierre</div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">06</div>
 </section>
-<section class="page" data-page="7">
+<section class="page" data-page="7" style="--tint:#5C7488">
 
-  <div class="eyebrow">Le repos</div>
+  <div class="eyebrow">Espace nuit</div>
   <h2 class="h2">Quatre chambres,<br />quatre salles <span class="italic">d'eau</span>.</h2>
   <div class="rule"></div>
-  <p class="body" style="max-width:64ch">
+  <p class="body" style="max-width:62ch">
     Chaque chambre dispose de sa propre salle d'eau. Pas de partage, pas d'arbitrage
-    le matin. La première est une suite parentale de plain-pied ; les trois autres
-    occupent le niveau jardin, l'une ouvrant directement sur la piscine, l'autre sur
-    sa terrasse privative.
+    le matin. La première est une <span class="hl">suite parentale de plain-pied</span> ;
+    les trois autres occupent le niveau jardin, l'une ouvrant directement sur la
+    piscine, l'autre sur sa terrasse privative.
   </p>
-  <div class="grid-2" style="margin-top:7mm">
-<div class="figure" style="height:66mm"><img src="../assets/images/suite-terrasse-vue.jpg" alt="Chambre ouvrant sur sa terrasse privative" /></div><div class="figure" style="height:66mm"><img src="../assets/images/chambre-rayures.jpg" alt="Chambre habillée de rayures avec accès extérieur" /></div><div class="figure" style="height:66mm"><img src="../assets/images/chambre-dressing.jpg" alt="Chambre avec placards intégrés" /></div><div class="figure" style="height:66mm"><img src="../assets/images/suite-claustra.jpg" alt="Chambre et sa salle d'eau séparée par un claustra" /></div>
+  <div class="grid-2" style="margin-top:5mm">
+    <div class="figure" style="height:62mm"><img src="../assets/images/suite-terrasse-vue.jpg" alt="Chambre ouvrant sur sa terrasse privative" /></div>
+    <div class="figure" style="height:62mm"><img src="../assets/images/chambre-rayures.jpg" alt="Chambre habillée de rayures avec accès extérieur" /></div>
+    <div class="figure" style="height:62mm"><img src="../assets/images/chambre-dressing.jpg" alt="Chambre avec placards intégrés" /></div>
+    <div class="figure" style="height:62mm"><img src="../assets/images/suite-claustra.jpg" alt="Chambre et sa salle d'eau séparée par un claustra" /></div>
   </div>
-  <div class="figure__cap" style="margin-top:3mm">Quatre chambres, quatre caractères, toutes avec leur salle d'eau</div>
+  <div class="figure__cap">Quatre chambres, quatre caractères, toutes avec leur salle d'eau</div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">07</div>
 </section>
-<section class="page" data-page="8">
+<section class="page" data-page="8" style="--tint:#C46A3C">
 
   <div class="eyebrow">Les salles d'eau</div>
   <h2 class="h2">Neuves,<br />et pas <span class="italic">interchangeables</span>.</h2>
   <div class="rule"></div>
-  <p class="body" style="max-width:64ch">
-    Faïence en damier et robinetterie cuivre d'un côté, terracotta et bois cannelé de
-    l'autre. Quatre pièces d'eau entièrement refaites en 2026, chacune avec sa douche
-    à l'italienne, et aucune qui ressemble à la voisine.
+  <p class="body" style="max-width:62ch">
+    Faïence en damier et robinetterie cuivre d'un côté, terracotta et bois cannelé
+    de l'autre. Quatre pièces d'eau entièrement refaites en 2026, chacune avec sa
+    douche à l'italienne, et aucune qui ressemble à la voisine.
   </p>
-  <div class="grid-2" style="margin-top:7mm">
-<div class="figure" style="height:104mm"><img src="../assets/images/sdb-damier.jpg" alt="Salle d'eau à double vasque, damier et cuivre" /></div><div class="figure" style="height:104mm"><img src="../assets/images/sdb-terracotta.jpg" alt="Salle d'eau terracotta et douche à l'italienne" /></div>
+  <div class="grid-2" style="margin-top:5mm">
+    <div class="figure" style="height:96mm"><img src="../assets/images/sdb-damier.jpg" alt="Salle d'eau à double vasque, damier et cuivre" /></div>
+    <div class="figure" style="height:96mm"><img src="../assets/images/sdb-terracotta.jpg" alt="Salle d'eau terracotta et douche à l'italienne" /></div>
   </div>
-  <div class="notes" style="margin-top:6mm">
-    <div><div class="note__t">Double vasque</div><div class="note__p">Faïence en damier, robinetterie et miroirs en cuivre, douche à l'italienne.</div></div>
-    <div><div class="note__t">Terracotta</div><div class="note__p">Bois cannelé, douche à l'italienne pleine hauteur, éclairage indirect.</div></div>
+  <div class="cards" style="margin-top:5mm">
+    <div class="card" style="--c:#C46A3C"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V7a3 3 0 016 0v1"/><path d="M13 8h8M15 12v1M18 12v2M21 12v1M17 16v1M20 16v2"/></svg></div><div class="card__t">Double vasque</div><div class="card__p">Faïence en damier, robinetterie et miroirs en cuivre, douche à l'italienne.</div></div>
+    <div class="card" style="--c:#C46A3C"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V7a3 3 0 016 0v1"/><path d="M13 8h8M15 12v1M18 12v2M21 12v1M17 16v1M20 16v2"/></svg></div><div class="card__t">Terracotta</div><div class="card__p">Bois cannelé, douche à l'italienne pleine hauteur, éclairage indirect.</div></div>
   </div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">08</div>
 </section>
-<section class="page" data-page="9">
-<div class="figure bleed bleed-top" style="height:118mm"><img src="../assets/images/mezzanine.jpg" alt="La mezzanine mansardée sous ses verrières" /></div>
-  <div style="margin-top:9mm">
+<section class="page" data-page="9" style="--tint:#3E8E96">
+
+  <div class="figure bleed bleed-top" style="height:112mm"><img src="../assets/images/mezzanine.jpg" alt="La mezzanine mansardée sous ses verrières" /></div>
+  <div style="margin-top:8mm">
     <div class="eyebrow">L'étage</div>
     <h2 class="h2">La mezzanine,<br />et la <span class="italic">mer</span>.</h2>
     <div class="rule"></div>
     <p class="body">
-      Sous les toits, une mezzanine mansardée que les verrières inondent de lumière du
-      matin au soir. C'est de là que la vue porte le plus loin : la mer, le Cap Canaille,
-      la couronne de Charlemagne et le château de Cassis.
+      Sous les toits, une mezzanine mansardée que les verrières inondent de lumière
+      du matin au soir. C'est de là que la vue porte le plus loin :
+      <span class="hl">la mer, le Cap Canaille, la couronne de Charlemagne et le
+      château de Cassis</span>.
     </p>
-    <p class="body">
-      Bureau, chambre d'appoint, salle de jeux ou simple pièce à ne rien faire : elle se
-      plie à l'usage qu'on lui donne. C'est souvent la pièce que l'on finit par préférer.
-    </p>
+    <div class="cards" style="margin-top:5mm">
+      <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20c1.5 0 1.5-1.2 3-1.2s1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2"/><path d="M2 14l10-9 10 9"/></svg></div><div class="card__t">Vue dégagée</div><div class="card__p">Mer, Cap Canaille, couronne de Charlemagne et château de Cassis.</div></div>
+      <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2z"/><path d="M9 3v16M15 5v16"/></svg></div><div class="card__t">Pièce modulable</div><div class="card__p">Bureau, chambre d'appoint, salle de jeux : elle se plie à l'usage.</div></div>
+    </div>
   </div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">09</div>
 </section>
-<section class="page" data-page="10">
+<section class="page" data-page="10" style="--tint:#6F7551">
 
   <div class="eyebrow">Les extérieurs</div>
   <h2 class="h2">Dehors,<br />tout le <span class="italic">Sud</span>.</h2>
   <div class="rule"></div>
-  <p class="body" style="max-width:64ch">
-    Quatre cents mètres carrés de parcelle, un jardin paysagé avec pelouse et arrosage
-    automatique, plusieurs terrasses en pierre qui suivent la course du soleil. La
-    cuisine d'été prend le relais dès les beaux jours ; la piscine, en béton armé,
-    reste à l'abri des regards.
+  <p class="body" style="max-width:62ch">
+    Quatre cents mètres carrés de parcelle, un jardin paysagé avec pelouse et
+    arrosage automatique, plusieurs terrasses en pierre qui suivent la course du
+    soleil. La cuisine d'été prend le relais dès les beaux jours ; la piscine,
+    en béton armé, reste à l'abri des regards.
   </p>
-<div style="margin-top:7mm"><div class="figure" style="height:98mm"><img src="../assets/images/vue-aerienne-piscine.jpg" alt="Le jardin, les terrasses et la piscine vus du ciel" /></div></div>
-  <div class="notes" style="margin-top:6mm">
-    <div><div class="note__t">Le jardin</div><div class="note__p">Paysagé, pelouse et arrosage automatique, terrasses en pierre, pin parasol.</div></div>
-    <div><div class="note__t">La piscine</div><div class="note__p">Béton armé, intimiste, en contrebas des terrasses et à l'abri des regards.</div></div>
+  <div class="figure" style="height:94mm"><img src="../assets/images/vue-aerienne-piscine.jpg" alt="Le jardin, les terrasses et la piscine vus du ciel" /></div>
+  <div class="cards" style="margin-top:5mm">
+    <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12c0-3 2-5 5-5 0 3-2 5-5 5zM12 14c0-3-2-5-5-5 0 3 2 5 5 5z"/><path d="M8 22h8"/></svg></div><div class="card__t">Le jardin</div><div class="card__p">Paysagé, pelouse et arrosage automatique, terrasses en pierre, pin parasol.</div></div>
+    <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><path d="M7 15V5a2 2 0 014 0v10M13 15V5a2 2 0 014 0v10M7 8h10M7 11h10"/></svg></div><div class="card__t">La piscine</div><div class="card__p">Béton armé, en contrebas des terrasses et à l'abri des regards.</div></div>
   </div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">10</div>
 </section>
-<section class="page" data-page="11">
+<section class="page" data-page="11" style="--tint:#C46A3C">
 
-  <div class="eyebrow">Le lieu</div>
-  <h2 class="h2">Cassis,<br />tout à <span class="italic">pied</span>.</h2>
+  <div class="eyebrow">Art de vivre</div>
+  <h2 class="h2">Cassis,<br />à <span class="italic">chaque saison</span>.</h2>
   <div class="rule"></div>
-  <p class="body" style="max-width:64ch">
-    Entre le plus haut promontoire maritime de France et le parc national des Calanques,
-    Cassis tient dans un mouchoir de poche. Douze mille habitants l'hiver, un port de
-    pêche devenu port de plaisance, un vignoble classé en AOC depuis 1936, et la
-    voiture qui devient une option.
+  <p class="body" style="max-width:62ch">
+    Un port de pêche devenu port de plaisance, un vignoble classé en AOC depuis
+    1936, et le parc national des Calanques pour jardin. Ici,
+    <span class="hl">la voiture devient une option</span>.
   </p>
-<div style="margin-top:6mm"><div class="figure" style="height:74mm"><img src="../assets/images/cassis-cap-canaille.jpg" alt="Cassis vu depuis les hauteurs, face au Cap Canaille" /></div></div>
-  <ul class="rows" style="margin-top:7mm">
-    <li><span class="rows__k">Port, restaurants et terrasses</span><span class="rows__v">À pied</span></li>
-    <li><span class="rows__k">Marché et commerces de bouche</span><span class="rows__v">À pied</span></li>
-    <li><span class="rows__k">Plage de la Grande Mer</span><span class="rows__v">À pied</span></li>
+  <div class="figure" style="height:50mm"><img src="../assets/images/cassis/port-de-cassis.jpg" alt="Le port de Cassis, ses barques colorées et le château" /></div>
+  <div class="tiles" style="margin-top:4mm">
+    <div class="tile" style="--c:#3E8E96"><div class="tile__t">Hiver</div><ul><li>Le village rendu à ses habitants</li><li>Randonnée dans les calanques</li><li>Tables au coin du feu</li></ul></div>
+    <div class="tile" style="--c:#6F7551"><div class="tile__t">Printemps</div><ul><li>Les calanques avant la foule</li><li>Sentier du littoral</li><li>Terrasses au soleil</li></ul></div>
+    <div class="tile" style="--c:#C46A3C"><div class="tile__t">Été</div><ul><li>Baignade à la Grande Mer</li><li>Bateau vers Port-Pin et En-Vau</li><li>Dîner sur le port</li></ul></div>
+    <div class="tile" style="--c:#B99A6B"><div class="tile__t">Automne</div><ul><li>Vendanges du vignoble cassidain</li><li>Mer encore chaude</li><li>Lumière rasante sur le Cap</li></ul></div>
+  </div>
+  <div class="grid-3" style="margin-top:3mm">
+    <div class="figure" style="height:31mm"><img src="../assets/images/cassis/calanque-en-vau.jpg" alt="La calanque d'En-Vau" /></div>
+    <div class="figure" style="height:31mm"><img src="../assets/images/cassis/calanque-port-miou.jpg" alt="La calanque de Port-Miou et ses voiliers" /></div>
+    <div class="figure" style="height:31mm"><img src="../assets/images/cassis/plage-grande-mer.jpg" alt="L'anse de la Grande Mer" /></div>
+  </div>
+  <div class="figure__cap">En-Vau · Port-Miou · La Grande Mer</div>
+  <ul class="rows rows--tight" style="margin-top:4mm">
+    <li><span class="rows__k">Port, marché, commerces et plage</span><span class="rows__v">À pied</span></li>
     <li><span class="rows__k">Calanque de Port-Miou</span><span class="rows__v">Quelques minutes</span></li>
-    <li><span class="rows__k">Vignoble AOC Cassis</span><span class="rows__v">Aux portes de la ville</span></li>
     <li><span class="rows__k">Marseille</span><span class="rows__v">Environ 30 minutes</span></li>
     <li><span class="rows__k">Aéroport Marseille-Provence</span><span class="rows__v">Environ 45 minutes</span></li>
   </ul>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">11</div>
 </section>
-<section class="page" data-page="12">
+<section class="page" data-page="12" style="--tint:#5C7488">
 
-  <div class="eyebrow">La rénovation</div>
+  <div class="eyebrow">Performance · Garanties</div>
   <h2 class="h2">Rénovée<br />pour <span class="italic">durer</span>.</h2>
   <div class="rule"></div>
-  <p class="body" style="max-width:64ch">
-    Une maison ancienne rénovée en 2026 par un professionnel n'est pas une maison
-    ancienne rénovée par son propriétaire. La différence tient en deux lignes : la
-    garantie décennale et l'assurance dommages-ouvrage.
+  <p class="body" style="max-width:62ch">
+    Une maison ancienne rénovée par un professionnel n'est pas une maison ancienne
+    rénovée par son propriétaire. La différence tient en deux lignes.
   </p>
-  <div class="notes" style="margin-top:7mm">
-    <div>
-      <div class="note__t">Garantie décennale</div>
-      <div class="note__p">Elle couvre pendant dix ans, à compter de la réception des travaux, tout désordre compromettant la solidité de l'ouvrage ou le rendant impropre à sa destination. Elle est attachée au bien, pas au propriétaire : elle vous suit.</div>
-    </div>
-    <div>
-      <div class="note__t">Dommages-ouvrage</div>
-      <div class="note__p">Elle préfinance les réparations relevant de la décennale, sans attendre qu'un tribunal désigne un responsable. Concrètement : un sinistre est réparé vite, sans procédure.</div>
-    </div>
-    <div>
-      <div class="note__t">Ce que cela change</div>
-      <div class="note__p">Aucun budget travaux à prévoir, aucune mauvaise surprise derrière les murs, et une revente facilitée tant que les garanties courent.</div>
-    </div>
-    <div>
-      <div class="note__t">Confort thermique</div>
-      <div class="note__p">Isolation et menuiseries reprises, climatisation dans toute la maison, cheminée à insert pour les soirées d'hiver.</div>
-    </div>
+  <div class="cards" style="margin-top:5mm">
+    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="card__t">Garantie décennale</div><div class="card__p">Dix ans à compter de la réception des travaux, sur tout désordre compromettant la solidité de l'ouvrage. Elle est attachée au bien : elle vous suit.</div></div>
+    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V7z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></div><div class="card__t">Dommages-ouvrage</div><div class="card__p">Elle préfinance les réparations relevant de la décennale sans attendre qu'un tribunal désigne un responsable. Un sinistre est réparé vite, sans procédure.</div></div>
+    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L21 2M17 6l3 3M14 9l3 3"/></svg></div><div class="card__t">Aucun budget travaux</div><div class="card__p">Rien à reprendre derrière les murs, et une revente facilitée tant que les garanties courent.</div></div>
+    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="8" rx="2"/><path d="M6 17v2M12 17v3M18 17v2M5 9h14"/></svg></div><div class="card__t">Confort thermique</div><div class="card__p">Isolation et menuiseries reprises, climatisation dans toute la maison, cheminée à insert pour l'hiver.</div></div>
   </div>
-<div style="margin-top:7mm"><div class="figure" style="height:64mm"><img src="../assets/images/reception-mur-pierre.jpg" alt="La pièce de vie, pierre apparente et charpente reprise" /></div><div class="figure__cap">La pierre conservée, tout le reste repris</div></div>
+  <div style="margin-top:5mm"><div class="figure" style="height:62mm"><img src="../assets/images/reception-mur-pierre.jpg" alt="La pièce de vie, pierre apparente et charpente reprise" /></div></div>
+  <div class="figure__cap">La pierre conservée, tout le reste repris</div>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
   <div class="page-num">12</div>
 </section>
-<section class="page" data-page="13">
+<section class="page" data-page="13" style="--tint:#6F7551">
+
+  <div class="eyebrow">Diagnostic de performance énergétique</div>
+  <h2 class="h2">Une maison<br /><span class="italic">sobre</span>.</h2>
+  <div class="rule"></div>
+  <p class="body" style="max-width:62ch">
+    Ni passoire thermique, ni logement énergivore : la rénovation de 2026 place la
+    maison en <span class="hl">classe C</span>, et ses émissions de gaz à effet de
+    serre en <span class="hl">classe A</span>, le meilleur niveau de l'échelle.
+  </p>
+
+  <div style="margin-top:6mm">
+    <div class="scale__cap">Consommation d'énergie primaire · kWh/m²/an</div>
+    <div class="scale"><div class="scale__row"><span class="scale__ltr">A</span><span class="scale__bar" style="width:42%;background:#319834;color:rgba(0,0,0,.62);justify-content:flex-end">≤ 70</span></div><div class="scale__row"><span class="scale__ltr">B</span><span class="scale__bar" style="width:50%;background:#33CC31;color:rgba(0,0,0,.62);justify-content:flex-end">71 – 110</span></div><div class="scale__row is-on"><span class="scale__ltr">C</span><span class="scale__bar" style="width:58%;background:#CBFC34;color:rgba(0,0,0,.62);justify-content:flex-end">111 – 180</span><span class="scale__mark">154 kWh/m²/an</span></div><div class="scale__row"><span class="scale__ltr">D</span><span class="scale__bar" style="width:66%;background:#FBFE06;color:rgba(0,0,0,.62);justify-content:flex-end">181 – 250</span></div><div class="scale__row"><span class="scale__ltr">E</span><span class="scale__bar" style="width:75%;background:#FBCC05;color:rgba(0,0,0,.62);justify-content:flex-end">251 – 330</span></div><div class="scale__row"><span class="scale__ltr">F</span><span class="scale__bar" style="width:85%;background:#FC9935;color:rgba(0,0,0,.62);justify-content:flex-end">331 – 420</span></div><div class="scale__row"><span class="scale__ltr">G</span><span class="scale__bar" style="width:95%;background:#FC0205;color:rgba(255,255,255,.9);justify-content:flex-end">> 420</span></div></div>
+  </div>
+
+  <div style="margin-top:6mm">
+    <div class="scale__cap">Émissions de gaz à effet de serre · kgCO₂/m²/an</div>
+    <div class="scale"><div class="scale__row is-on"><span class="scale__ltr">A</span><span class="scale__bar" style="width:42%;background:#EDE7F1;color:rgba(0,0,0,.62);justify-content:flex-end">≤ 6</span><span class="scale__mark">4 kgCO₂/m²/an</span></div><div class="scale__row"><span class="scale__ltr">B</span><span class="scale__bar" style="width:50%;background:#D9CBE3;color:rgba(0,0,0,.62);justify-content:flex-end">7 – 11</span></div><div class="scale__row"><span class="scale__ltr">C</span><span class="scale__bar" style="width:58%;background:#C3ABD3;color:rgba(0,0,0,.62);justify-content:flex-end">12 – 30</span></div><div class="scale__row"><span class="scale__ltr">D</span><span class="scale__bar" style="width:66%;background:#AB8AC2;color:rgba(0,0,0,.62);justify-content:flex-end">31 – 50</span></div><div class="scale__row"><span class="scale__ltr">E</span><span class="scale__bar" style="width:75%;background:#9068AF;color:rgba(255,255,255,.9);justify-content:flex-end">51 – 70</span></div><div class="scale__row"><span class="scale__ltr">F</span><span class="scale__bar" style="width:85%;background:#74469B;color:rgba(255,255,255,.9);justify-content:flex-end">71 – 100</span></div><div class="scale__row"><span class="scale__ltr">G</span><span class="scale__bar" style="width:95%;background:#582385;color:rgba(255,255,255,.9);justify-content:flex-end">> 100</span></div></div>
+  </div>
+
+  <div class="cards" style="margin-top:6mm">
+    <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div class="card__t">154 kWh/m²/an</div><div class="card__p">Consommation en énergie primaire. Classe C, au-dessus de la moyenne du parc ancien.</div></div>
+    <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 014-4 5.5 5.5 0 0110.5-1.5A3.5 3.5 0 0121 15z"/><path d="M7 19h10"/></svg></div><div class="card__t">4 kgCO₂/m²/an</div><div class="card__p">Émissions de gaz à effet de serre. Classe A, le meilleur niveau de l'échelle.</div></div>
+  </div>
+
+  <p class="body" style="margin-top:5mm;font-size:7.8pt">
+    Valeurs issues du diagnostic de performance énergétique du bien. Montant estimé
+    des dépenses annuelles d'énergie communiqué avec le diagnostic complet.
+  </p>
+  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <div class="page-num">13</div>
+</section>
+<section class="page" data-page="14" style="--tint:#5C7488">
 
   <div class="eyebrow">Les prestations</div>
   <h2 class="h2">Les détails<br />qui <span class="italic">comptent</span>.</h2>
   <div class="rule"></div>
   <ul class="rows rows--tight">
-    <li><span class="rows__k">Surface habitable</span><span class="rows__v">170 m²</span></li>
+    <li><span class="rows__k">Surface habitable</span><span class="rows__v">160 m²</span></li>
     <li><span class="rows__k">Parcelle</span><span class="rows__v">400 m²</span></li>
+    <li><span class="rows__k">Nombre de pièces</span><span class="rows__v">5</span></li>
     <li><span class="rows__k">Pièce de vie</span><span class="rows__v">Plus de 50 m²</span></li>
     <li><span class="rows__k">Chambres</span><span class="rows__v">4, chacune avec sa salle d'eau</span></li>
     <li><span class="rows__k">Suite parentale de plain-pied</span><span class="rows__v">1</span></li>
@@ -663,113 +704,79 @@ img { display: block; max-width: 100%; }
     <li><span class="rows__k">Stationnement</span><span class="rows__v">1 place privative</span></li>
     <li><span class="rows__k">Rénovation</span><span class="rows__v">Intégrale, livrée en 2026</span></li>
     <li><span class="rows__k">Garanties</span><span class="rows__v">Décennale et dommages-ouvrage</span></li>
+    <li><span class="rows__k">Performance</span><span class="rows__v">DPE C · GES A</span></li>
     <li><span class="rows__k">Taxe foncière</span><span class="rows__v">1 000 € par an</span></li>
-    </ul>
-  <p class="body" style="margin-top:6mm;font-size:8.5pt">
+  </ul>
+  <p class="body" style="margin-top:4mm;font-size:7.8pt">
     Surfaces indiquées par le vendeur, sous réserve de mesurage. Informations non
     contractuelles, susceptibles d'évoluer jusqu'à la signature.
   </p>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
-  <div class="page-num">13</div>
+  <div class="page-num">14</div>
 </section>
-<section class="page" data-page="14">
+<section class="page" data-page="15" style="--tint:#5C7488">
+
+  <div class="eyebrow">Acquisition</div>
+  <h2 class="h2">Le <span class="italic">prix</span>.</h2>
+  <div class="rule"></div>
+
+  <div class="price">
+    <div class="price__l">Prix de vente</div>
+    <div class="price__v">1 490 000 €</div>
+    <div class="price__n">Honoraires d'agence à la charge du vendeur.</div>
+  </div>
+
+  <div class="cards" style="margin-top:6mm">
+    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V7z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></div><div class="card__t">Ce qui est inclus</div><div class="card__p">Le bien tel que présenté dans ce dossier : maison rénovée, jardin paysagé, piscine et cuisine d'été, cave et place de stationnement.</div></div>
+    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="card__t">Ce qui vous suit</div><div class="card__p">La garantie décennale et l'assurance dommages-ouvrage, attachées au bien et non au propriétaire.</div></div>
+    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M6 17v2M18 17v2"/><path d="M4 17l1.5-5.5A2 2 0 017.4 10h9.2a2 2 0 011.9 1.5L20 17"/><circle cx="7.5" cy="14.5" r="1"/><circle cx="16.5" cy="14.5" r="1"/></svg></div><div class="card__t">Frais annexes</div><div class="card__p">Frais de notaire dans l'ancien, taxe foncière de 1 000 € par an. Aucun budget travaux à prévoir.</div></div>
+    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div class="card__t">Charges d'énergie</div><div class="card__p">DPE en classe C et émissions en classe A : une maison ancienne aux charges maîtrisées.</div></div>
+  </div>
+
+  <div class="panel panel--pale" style="--tintPale:#E7EDF2;margin-top:6mm">
+    <div class="h3">Diffusion confidentielle</div>
+    <p class="body" style="margin:0;font-size:9pt">
+      Le bien n'est pas diffusé en vitrine. Nous qualifions chaque demande avant
+      d'organiser la moindre visite, par respect pour le vendeur et pour ne pas
+      vous faire perdre votre temps.
+    </p>
+  </div>
+  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <div class="page-num">15</div>
+</section>
+<section class="page" data-page="16" style="--tint:#5C7488">
 
   <div class="eyebrow">Comment ça se passe</div>
   <h2 class="h2">Quatre étapes,<br />sans <span class="italic">pression</span>.</h2>
   <div class="rule"></div>
-  <p class="body" style="max-width:64ch">
-    Le bien est diffusé de façon confidentielle. Nous qualifions chaque demande avant
-    d'organiser la moindre visite, par respect pour le vendeur et pour ne pas vous
-    faire perdre votre temps.
-  </p>
   <ul class="steps">
-    <li><div class="steps__n">01</div><div><div class="steps__t">La brochure</div><div class="steps__p">Vous avez ce dossier entre les mains. Plans, prestations, photographies et conditions d'acquisition y figurent.</div></div></li>
+    <li><div class="steps__n">01</div><div><div class="steps__t">La brochure</div><div class="steps__p">Vous avez ce dossier entre les mains. Prestations, photographies, performance énergétique et prix y figurent.</div></div></li>
     <li><div class="steps__n">02</div><div><div class="steps__t">L'échange</div><div class="steps__p">Un appel d'une quinzaine de minutes. Vos questions, votre projet, votre calendrier, et notre avis franc sur l'adéquation.</div></div></li>
     <li><div class="steps__n">03</div><div><div class="steps__t">La visite</div><div class="steps__p">Sur place ou en visioconférence, à votre rythme. Nous vous laissons le temps de revenir une seconde fois.</div></div></li>
     <li><div class="steps__n">04</div><div><div class="steps__t">L'acquisition</div><div class="steps__p">Offre, compromis, financement, notaire. Nous restons à vos côtés jusqu'à la remise des clés.</div></div></li>
   </ul>
-<div style="margin-top:7mm"><div class="figure" style="height:60mm"><img src="../assets/images/vue-aerienne-mer.jpg" alt="La maison, les toits de Cassis et la mer" /></div></div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
-  <div class="page-num">14</div>
-</section>
-<section class="page" data-page="15">
 
-  <div class="eyebrow">État des risques et pollutions</div>
-  <h2 class="h2">Ce que dit<br />le <span class="italic">diagnostic</span>.</h2>
-  <div class="rule"></div>
-  <p class="body" style="max-width:64ch">
-    L'état des risques et pollutions a été établi le 26 juin 2026 par un opérateur
-    agréé, pour la parcelle cadastrée <strong>CL 58</strong> sur la commune de Cassis
-    (référence d'édition 3739891). En voici la synthèse ; le document intégral,
-    dix pages, est annexé au dossier.
-  </p>
-
-  <ul class="rows rows--tight" style="margin-top:5mm">
-    <li><span class="rows__k">Inondation</span><span class="rows__v">Aucun risque sur la parcelle</span></li>
-    <li><span class="rows__k">Mouvements de terrain (argiles)</span><span class="rows__v">Aucun risque</span></li>
-    <li><span class="rows__k">Érosion (30 et 100 ans)</span><span class="rows__v">Aucun risque</span></li>
-    <li><span class="rows__k">Bruit aérien (PEB)</span><span class="rows__v">Hors périmètre</span></li>
-    <li><span class="rows__k">Risques miniers</span><span class="rows__v">Commune non concernée</span></li>
-    <li><span class="rows__k">Risques technologiques</span><span class="rows__v">Commune non concernée</span></li>
-    <li><span class="rows__k">Sites BASOL et ICPE à moins de 500 m</span><span class="rows__v">Aucun</span></li>
-    <li><span class="rows__k">Feu de forêt</span><span class="rows__v">PPR approuvé le 17/07/2018, sans travaux prescrits</span></li>
-    <li><span class="rows__k">Débroussaillement</span><span class="rows__v">Obligation légale (zonage informatif)</span></li>
-    <li><span class="rows__k">Sismicité</span><span class="rows__v">Niveau 2 sur 5 (faible)</span></li>
-    <li><span class="rows__k">Radon</span><span class="rows__v">Niveau 2 sur 3</span></li>
-  </ul>
-
-  <div class="panel" style="margin-top:6mm">
-    <div class="note__t" style="font-size:12pt;margin-bottom:2mm">Ce qu'il faut en retenir</div>
-    <p class="note__p">
-      Aucun risque d'inondation, de retrait-gonflement des argiles ni d'érosion ne pèse
-      sur la parcelle, et aucun site pollué ou installation classée ne figure dans un
-      rayon de cinq cents mètres. Le plan de prévention feu de forêt s'applique à
-      l'ensemble de la commune sans imposer de travaux sur ce bien : seule
-      l'obligation légale de débroussaillement demeure, comme partout en zone boisée
-      méditerranéenne.
-    </p>
-  </div>
-
-  <p class="body" style="margin-top:6mm;font-size:8pt">
-    Synthèse établie à partir de l'état des risques et pollutions du 26/06/2026,
-    valable six mois et actualisé le cas échéant lors de la signature. Document
-    intégral remis avec le dossier. Informations disponibles sur
-    <strong>georisques.gouv.fr</strong>.
-  </p>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
-  <div class="page-num">15</div>
-</section>
-<section class="page" data-page="16">
-
-  <div class="eyebrow">Nous contacter</div>
-  <h2 class="h2">Parlons-en<br />quand vous <span class="italic">voulez</span>.</h2>
-  <div class="rule"></div>
-  <p class="lead body" style="max-width:62ch">
-    Une question sur la maison, sur le quartier, sur le financement ? Écrivez-nous ou
-    prenez rendez-vous : nous répondons sous vingt-quatre heures ouvrées.
-  </p>
-
-  <div class="panel panel--dark" style="margin-top:9mm">
-    <div class="h3" style="font-family:var(--serif);font-size:16pt;margin-bottom:3mm">Prodigio</div>
-    <p class="body" style="margin-bottom:5mm">Immobilier d'exception</p>
-    <ul class="rows" style="border-top-color:rgba(246,244,239,.2)">
-      <li style="border-bottom-color:rgba(246,244,239,.2)"><span class="rows__k" style="color:var(--accent-light)">Le bien</span><span class="rows__v" style="color:var(--bg)">Villa Verdun</span></li>
-      <li style="border-bottom-color:rgba(246,244,239,.2)"><span class="rows__k" style="color:var(--accent-light)">Adresse</span><span class="rows__v" style="color:var(--bg)">Cassis (13260), adresse exacte lors de l'échange</span></li>
-      <li style="border-bottom-color:rgba(246,244,239,.2)"><span class="rows__k" style="color:var(--accent-light)">Diffusion</span><span class="rows__v" style="color:var(--bg)">Confidentielle</span></li>
-      <li style="border-bottom-color:rgba(246,244,239,.2)"><span class="rows__k" style="color:var(--accent-light)">Délai de réponse</span><span class="rows__v" style="color:var(--bg)">24 heures ouvrées</span></li>
+  <div class="panel panel--dark" style="margin-top:7mm">
+    <div class="h3" style="font-family:var(--serif);font-size:15pt;margin-bottom:3mm">Prodigio</div>
+    <p class="body" style="margin-bottom:4mm">Immobilier d'exception</p>
+    <ul class="rows rows--tight" style="border-top-color:rgba(247,245,240,.22)">
+      <li style="border-bottom-color:rgba(247,245,240,.22)"><span class="rows__k" style="color:var(--accent-light)">Le bien</span><span class="rows__v" style="color:var(--bg)">Villa Jean Jaurès</span></li>
+      <li style="border-bottom-color:rgba(247,245,240,.22)"><span class="rows__k" style="color:var(--accent-light)">Commune</span><span class="rows__v" style="color:var(--bg)">Cassis (13260)</span></li>
+      <li style="border-bottom-color:rgba(247,245,240,.22)"><span class="rows__k" style="color:var(--accent-light)">Prix de vente</span><span class="rows__v" style="color:var(--bg)">1 490 000 €</span></li>
+      <li style="border-bottom-color:rgba(247,245,240,.22)"><span class="rows__k" style="color:var(--accent-light)">Délai de réponse</span><span class="rows__v" style="color:var(--bg)">24 heures ouvrées</span></li>
     </ul>
   </div>
 
-  <div class="panel" style="margin-top:7mm;text-align:center">
-    <div class="note__t" style="font-size:12pt;margin-bottom:2mm">Nous joindre</div>
-    <p class="note__p">
-      Téléphone, e-mail et lien WhatsApp : à renseigner avant diffusion du dossier.
-    </p>
+  <div class="panel panel--pale" style="--tintPale:#E7EDF2;margin-top:5mm;text-align:center">
+    <div class="h3">Nous joindre</div>
+    <p class="body" style="margin:0;font-size:9pt">Téléphone, e-mail et lien WhatsApp : à renseigner avant diffusion du dossier.</p>
   </div>
 
-  <p class="body" style="margin-top:10mm;font-size:8pt;text-align:center;color:var(--soft)">
-    Document et photographies non contractuels. Brochure confidentielle,
-    destinée au seul usage de son destinataire.<br />
+  <p class="body" style="margin-top:6mm;font-size:7.6pt;text-align:center;color:var(--soft)">
+    Document et photographies non contractuels. Brochure confidentielle, destinée au
+    seul usage de son destinataire.<br />
+    Vues de Cassis : Chabe01, kallerna et Jean-Christophe Benoist, via Wikimedia Commons
+    (CC BY-SA 4.0 et CC BY 3.0), recadrées.<br />
     © 2026 Prodigio · Tous droits réservés.
   </p>
   <div class="page-brand">Prodigio · Immobilier d'exception</div>
@@ -793,8 +800,7 @@ img { display: block; max-width: 100%; }
 (function () {
   'use strict';
   var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
-  var total = pages.length;
-  var idx = 0;
+  var total = pages.length, idx = 0;
   var prev = document.getElementById('prev');
   var next = document.getElementById('next');
   var count = document.getElementById('count');
@@ -807,7 +813,7 @@ img { display: block; max-width: 100%; }
     count.textContent = pad(idx + 1) + ' / ' + pad(total);
     prev.disabled = idx === 0;
     next.disabled = idx === total - 1;
-    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    window.scrollTo(0, 0);
   }
 
   prev.addEventListener('click', function () { show(idx - 1); });
@@ -818,7 +824,6 @@ img { display: block; max-width: 100%; }
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') show(idx + 1);
   });
 
-  /* Balayage tactile */
   var x0 = null;
   document.addEventListener('touchstart', function (e) { x0 = e.changedTouches[0].clientX; }, { passive: true });
   document.addEventListener('touchend', function (e) {
@@ -828,10 +833,10 @@ img { display: block; max-width: 100%; }
     x0 = null;
   }, { passive: true });
 
-  /* La page A4 fait 210 mm : on la reduit pour qu'elle tienne dans les
-     fenetres plus etroites, sans casser la mise en page d'impression. */
+  /* La page A4 fait 210 mm : on la réduit pour qu'elle tienne dans les
+     fenêtres plus étroites, sans toucher à la mise en page d'impression. */
   function fit() {
-    var mm = 210 * (96 / 25.4);              /* 210 mm en pixels CSS */
+    var mm = 210 * (96 / 25.4);
     var available = Math.min(window.innerWidth - 32, mm);
     document.documentElement.style.setProperty('--scale', (available / mm).toFixed(4));
   }
@@ -839,8 +844,7 @@ img { display: block; max-width: 100%; }
   window.addEventListener('resize', fit);
 
   document.getElementById('print').addEventListener('click', function (e) {
-    e.preventDefault();
-    window.print();
+    e.preventDefault(); window.print();
   });
 
   show(0);
