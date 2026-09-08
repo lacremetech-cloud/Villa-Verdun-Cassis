@@ -59,9 +59,14 @@ l'auteur, soit des images propres au bien.
 | Élément | Emplacement |
 |---|---|
 | Pixel Meta | `index.html`, commentaire `TODO Meta Pixel` |
-| Coordonnées Prodigio | `brochure/index.html`, page 16 |
+| Coordonnées Prodigio | `brochure/index.html`, page 16 (WhatsApp déjà branché) |
 | Redirection du tunnel | Systeme.io, voir ci-dessous |
 | Mentions légales, confidentialité | pied de page, liens `#` |
+
+## Contact WhatsApp
+
+`https://wa.me/33625773592`, présent en pastille verte au pied de chaque page
+intérieure de la brochure, en bouton sur sa dernière page, et au pied du site.
 
 ## Formulaire de capture
 
@@ -81,7 +86,7 @@ Après validation, le navigateur quitte le site pour la page de remerciement du
 tunnel. **C'est là qu'il faut pointer vers la brochure** :
 
 ```
-https://<votre-domaine>/brochure/
+https://villa-jeanjaures-cassis.vercel.app/brochure/
 ```
 
 Tant que cette redirection n'est pas configurée, le visiteur laisse ses

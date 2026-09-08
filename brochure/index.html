@@ -198,7 +198,7 @@ html, body { background: #46525C; }
 body {
   font-family: var(--sans); color: var(--fg);
   font-size: 10.5pt; line-height: 1.6; font-weight: 300;
-  padding: 1.25rem 1rem 7rem; -webkit-font-smoothing: antialiased;
+  padding: 1.25rem 1rem 6rem; -webkit-font-smoothing: antialiased;
 }
 img { display: block; max-width: 100%; }
 svg { display: block; }
@@ -207,12 +207,14 @@ svg { display: block; }
 
 .page {
   width: 210mm; height: 297mm; margin: 0 auto;
-  margin-bottom: calc(1.5rem - (1 - var(--scale)) * 297mm);
+  margin-bottom: 0;
   background: var(--bg); position: relative; overflow: hidden;
   box-shadow: 0 16px 48px rgba(0,0,0,.42);
   padding: 20mm 18mm 24mm;
   display: none; page-break-after: always;
-  transform: scale(var(--scale)); transform-origin: top center;
+  /* zoom plutôt que transform : il réduit aussi la hauteur de mise en page,
+     donc pas d'espace vide sous la page ni de défilement inutile. */
+  zoom: var(--scale);
 }
 .page.is-active { display: block; }
 .page:last-child { page-break-after: auto; }
@@ -269,7 +271,6 @@ svg { display: block; }
 .bleed { margin-left: -18mm; margin-right: -18mm; width: calc(100% + 36mm); border-radius: 0; }
 .bleed-top { margin-top: -20mm; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
 .grid-2-3 { display: grid; grid-template-columns: 1.1fr .9fr; gap: 6mm; align-items: start; }
 
 /* ---------- chiffres à icône ---------- */
@@ -337,9 +338,53 @@ svg { display: block; }
 .steps__t { font-family: var(--serif); font-size: 13pt; color: var(--fg); }
 .steps__p { font-size: 8.8pt; line-height: 1.55; color: var(--muted); }
 
+/* ---------- groupes de prestations ---------- */
+.groups { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.group { background: var(--paper); border: 1px solid var(--border); border-top: 3px solid var(--c, var(--accent)); border-radius: 2px; padding: 4.5mm 5mm 3mm; }
+.group__h { display: flex; align-items: center; gap: 2.5mm; margin-bottom: 2.5mm; }
+.group__h svg { color: var(--c, var(--accent)); }
+.group__t { font-family: var(--serif); font-size: 12pt; color: var(--fg); }
+.group ul { list-style: none; }
+.group li { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; padding: 1.6mm 0; border-bottom: 1px solid var(--border); }
+.group li:last-child { border-bottom: 0; }
+.group__k { font-size: 6.8pt; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.group__v { font-size: 8.8pt; color: var(--fg); text-align: right; }
+
+/* ---------- mosaïque ---------- */
+.mosaic { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm; }
+.mosaic .figure { height: 26mm; }
+.mosaic .figure--tall { grid-row: span 2; height: 54.5mm; }
+.mosaic .figure--wide { grid-column: span 2; }
+
+/* ---------- bandeau photo en tête de page ---------- */
+.hero-band { margin: -20mm -18mm 7mm; width: calc(100% + 36mm); position: relative; overflow: hidden; }
+.hero-band img { width: 100%; height: 100%; object-fit: cover; }
+.hero-band__veil { position: absolute; inset: 0; background: linear-gradient(to top, rgba(20,31,39,.55), rgba(20,31,39,.05) 55%); }
+.hero-band__t {
+  position: absolute; left: 18mm; bottom: 6mm; color: #fff;
+  font-size: 7.5pt; letter-spacing: .28em; text-transform: uppercase;
+}
+
 /* ---------- pied de page ---------- */
 .page-num { position: absolute; bottom: 11mm; right: 18mm; font-size: 7.2pt; letter-spacing: .3em; color: var(--soft); }
 .page-brand { position: absolute; bottom: 11mm; left: 18mm; font-size: 6.8pt; letter-spacing: .22em; text-transform: uppercase; color: var(--soft); }
+
+/* pastille WhatsApp, reprise de la brochure du chalet */
+.page-wa {
+  position: absolute; bottom: 9.5mm; left: 50%; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 2mm;
+  padding: 2.2mm 5mm; background: #25D366; color: #fff;
+  font-size: 7pt; letter-spacing: .14em; text-transform: uppercase; font-weight: 500;
+  text-decoration: none; border-radius: 100px; white-space: nowrap;
+}
+.page-wa svg { width: 3.6mm; height: 3.6mm; fill: currentColor; stroke: none; }
+.wa-btn {
+  display: inline-flex; align-items: center; gap: 2.5mm;
+  padding: 3.5mm 8mm; background: #25D366; color: #fff;
+  font-size: 8.5pt; letter-spacing: .16em; text-transform: uppercase; font-weight: 500;
+  text-decoration: none; border-radius: 100px;
+}
+.wa-btn svg { width: 4.2mm; height: 4.2mm; fill: currentColor; stroke: none; }
 
 /* ---------- barre de navigation (écran) ---------- */
 .bar {
@@ -361,8 +406,9 @@ svg { display: block; }
 @media print {
   html, body { background: #fff; }
   body { padding: 0; }
-  .page { display: block !important; box-shadow: none; margin: 0; transform: none; width: 210mm; height: 297mm; }
+  .page { display: block !important; box-shadow: none; margin: 0; zoom: 1; width: 210mm; height: 297mm; }
   .bar { display: none !important; }
+  .page-wa, .wa-btn { background: #25D366 !important; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 @page { size: A4; margin: 0; }
@@ -415,7 +461,8 @@ svg { display: block; }
     <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M8 8h8"/><circle cx="12" cy="4" r="1.5"/><path d="M4 14a8 8 0 0016 0"/></svg></div><div class="card__t">Le port à pied</div><div class="card__p">Restaurants, terrasses et marché se rejoignent sans prendre la voiture.</div></div>
     <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L21 2M17 6l3 3M14 9l3 3"/></svg></div><div class="card__t">Rien à faire</div><div class="card__p">Rénovation intégrale livrée en 2026, garanties constructeur incluses.</div></div>
   </div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">02</div>
 </section>
 <section class="page" data-page="3" style="--tint:#5C7488">
@@ -441,7 +488,8 @@ svg { display: block; }
   </div>
   <div class="figure" style="height:56mm"><img src="../assets/images/cassis/cap-canaille-panorama.jpg" alt="Le Cap Canaille et la baie de Cassis" /></div>
   <div class="figure__cap">Le Cap Canaille, plus haute falaise maritime de France</div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">03</div>
 </section>
 <section class="page" data-page="4" style="--tint:#B99A6B">
@@ -462,7 +510,8 @@ svg { display: block; }
       <div class="card" style="--c:#B99A6B"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="8" rx="2"/><path d="M6 17v2M12 17v3M18 17v2M5 9h14"/></svg></div><div class="card__t">Climatisation</div><div class="card__p">Dans toute la maison, pour les mois où le soleil ne faiblit pas.</div></div>
     </div>
   </div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">04</div>
 </section>
 <section class="page" data-page="5" style="--tint:#B99A6B">
@@ -494,7 +543,8 @@ svg { display: block; }
     <div class="card" style="--c:#B99A6B"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 4c0 5 0 11 0 16M12 4c0 5 0 11 0 16M16 4c0 5 0 11 0 16"/></svg></div><div class="card__t">Chêne massif</div><div class="card__p">Posé en point de Hongrie dans les pièces de vie et les chambres.</div></div>
     <div class="card" style="--c:#B99A6B"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h7v5H3zM10 8h11v5H10zM3 13h11v5H3zM14 13h7v5h-7z"/></svg></div><div class="card__t">Pierre de taille</div><div class="card__p">Le mur d'origine, nettoyé et laissé apparent dans la pièce de vie.</div></div>
   </div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">05</div>
 </section>
 <section class="page" data-page="6" style="--tint:#5C7488">
@@ -510,7 +560,8 @@ svg { display: block; }
   <div class="figure" style="height:92mm"><img src="../assets/images/cuisine-bleue.jpg" alt="La cuisine ouverte, façades bleu pétrole" /></div>
   <div style="margin-top:4mm"><div class="figure" style="height:62mm"><img src="../assets/images/reception-mur-pierre.jpg" alt="Le mur en pierre apparente et les ouvertures sur les collines" /></div></div>
   <div class="figure__cap">Depuis la cuisine, la pièce de vie et son mur de pierre</div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">06</div>
 </section>
 <section class="page" data-page="7" style="--tint:#5C7488">
@@ -531,7 +582,8 @@ svg { display: block; }
     <div class="figure" style="height:62mm"><img src="../assets/images/suite-claustra.jpg" alt="Chambre et sa salle d'eau séparée par un claustra" /></div>
   </div>
   <div class="figure__cap">Quatre chambres, quatre caractères, toutes avec leur salle d'eau</div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">07</div>
 </section>
 <section class="page" data-page="8" style="--tint:#C46A3C">
@@ -552,7 +604,8 @@ svg { display: block; }
     <div class="card" style="--c:#C46A3C"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V7a3 3 0 016 0v1"/><path d="M13 8h8M15 12v1M18 12v2M21 12v1M17 16v1M20 16v2"/></svg></div><div class="card__t">Double vasque</div><div class="card__p">Faïence en damier, robinetterie et miroirs en cuivre, douche à l'italienne.</div></div>
     <div class="card" style="--c:#C46A3C"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V7a3 3 0 016 0v1"/><path d="M13 8h8M15 12v1M18 12v2M21 12v1M17 16v1M20 16v2"/></svg></div><div class="card__t">Terracotta</div><div class="card__p">Bois cannelé, douche à l'italienne pleine hauteur, éclairage indirect.</div></div>
   </div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">08</div>
 </section>
 <section class="page" data-page="9" style="--tint:#3E8E96">
@@ -573,7 +626,8 @@ svg { display: block; }
       <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l6-2 6 2 6-2v16l-6 2-6-2-6 2z"/><path d="M9 3v16M15 5v16"/></svg></div><div class="card__t">Pièce modulable</div><div class="card__p">Bureau, chambre d'appoint, salle de jeux : elle se plie à l'usage.</div></div>
     </div>
   </div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">09</div>
 </section>
 <section class="page" data-page="10" style="--tint:#6F7551">
@@ -592,7 +646,8 @@ svg { display: block; }
     <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12c0-3 2-5 5-5 0 3-2 5-5 5zM12 14c0-3-2-5-5-5 0 3 2 5 5 5z"/><path d="M8 22h8"/></svg></div><div class="card__t">Le jardin</div><div class="card__p">Paysagé, pelouse et arrosage automatique, terrasses en pierre, pin parasol.</div></div>
     <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17c2 0 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><path d="M7 15V5a2 2 0 014 0v10M13 15V5a2 2 0 014 0v10M7 8h10M7 11h10"/></svg></div><div class="card__t">La piscine</div><div class="card__p">Béton armé, en contrebas des terrasses et à l'abri des regards.</div></div>
   </div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">10</div>
 </section>
 <section class="page" data-page="11" style="--tint:#C46A3C">
@@ -605,31 +660,37 @@ svg { display: block; }
     1936, et le parc national des Calanques pour jardin. Ici,
     <span class="hl">la voiture devient une option</span>.
   </p>
-  <div class="figure" style="height:50mm"><img src="../assets/images/cassis/port-de-cassis.jpg" alt="Le port de Cassis, ses barques colorées et le château" /></div>
-  <div class="tiles" style="margin-top:4mm">
+  
+  <div class="tiles" style="margin-top:3.5mm">
     <div class="tile" style="--c:#3E8E96"><div class="tile__t">Hiver</div><ul><li>Le village rendu à ses habitants</li><li>Randonnée dans les calanques</li><li>Tables au coin du feu</li></ul></div>
     <div class="tile" style="--c:#6F7551"><div class="tile__t">Printemps</div><ul><li>Les calanques avant la foule</li><li>Sentier du littoral</li><li>Terrasses au soleil</li></ul></div>
     <div class="tile" style="--c:#C46A3C"><div class="tile__t">Été</div><ul><li>Baignade à la Grande Mer</li><li>Bateau vers Port-Pin et En-Vau</li><li>Dîner sur le port</li></ul></div>
     <div class="tile" style="--c:#B99A6B"><div class="tile__t">Automne</div><ul><li>Vendanges du vignoble cassidain</li><li>Mer encore chaude</li><li>Lumière rasante sur le Cap</li></ul></div>
   </div>
-  <div class="grid-3" style="margin-top:3mm">
-    <div class="figure" style="height:31mm"><img src="../assets/images/cassis/calanque-en-vau.jpg" alt="La calanque d'En-Vau" /></div>
-    <div class="figure" style="height:31mm"><img src="../assets/images/cassis/calanque-port-miou.jpg" alt="La calanque de Port-Miou et ses voiliers" /></div>
-    <div class="figure" style="height:31mm"><img src="../assets/images/cassis/plage-grande-mer.jpg" alt="L'anse de la Grande Mer" /></div>
+  <div class="grid-3" style="margin-top:3.5mm">
+    <div class="figure" style="height:32mm"><img src="../assets/images/cassis/calanque-en-vau.jpg" alt="La calanque d'En-Vau" /></div>
+    <div class="figure" style="height:32mm"><img src="../assets/images/cassis/calanque-port-miou.jpg" alt="La calanque de Port-Miou et ses voiliers" /></div>
+    <div class="figure" style="height:32mm"><img src="../assets/images/cassis/port-de-cassis.jpg" alt="Le port de Cassis et son château" /></div>
   </div>
-  <div class="figure__cap">En-Vau · Port-Miou · La Grande Mer</div>
-  <ul class="rows rows--tight" style="margin-top:4mm">
-    <li><span class="rows__k">Port, marché, commerces et plage</span><span class="rows__v">À pied</span></li>
-    <li><span class="rows__k">Calanque de Port-Miou</span><span class="rows__v">Quelques minutes</span></li>
-    <li><span class="rows__k">Marseille</span><span class="rows__v">Environ 30 minutes</span></li>
-    <li><span class="rows__k">Aéroport Marseille-Provence</span><span class="rows__v">Environ 45 minutes</span></li>
-  </ul>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <div class="figure__cap">En-Vau · Port-Miou · Le port de Cassis</div>
+  <div class="grid-2" style="margin-top:3mm;gap:6mm">
+    <ul class="rows rows--tight">
+      <li><span class="rows__k">Port et marché</span><span class="rows__v">À pied</span></li>
+      <li><span class="rows__k">Commerces et plage</span><span class="rows__v">À pied</span></li>
+    </ul>
+    <ul class="rows rows--tight">
+      <li><span class="rows__k">Marseille</span><span class="rows__v">Environ 30 min</span></li>
+      <li><span class="rows__k">Aéroport</span><span class="rows__v">Environ 45 min</span></li>
+    </ul>
+  </div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">11</div>
 </section>
 <section class="page" data-page="12" style="--tint:#5C7488">
 
-  <div class="eyebrow">Performance · Garanties</div>
+  <div class="hero-band" style="height:52mm"><img src="../assets/images/charpente-lanternes.jpg" alt="Charpente et pierre de taille" /><div class="hero-band__veil"></div><div class="hero-band__t">Performance · Garanties</div></div>
+  <div class="eyebrow">Ce qui vous protège</div>
   <h2 class="h2">Rénovée<br />pour <span class="italic">durer</span>.</h2>
   <div class="rule"></div>
   <p class="body" style="max-width:62ch">
@@ -637,19 +698,40 @@ svg { display: block; }
     rénovée par son propriétaire. La différence tient en deux lignes.
   </p>
   <div class="cards" style="margin-top:5mm">
-    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="card__t">Garantie décennale</div><div class="card__p">Dix ans à compter de la réception des travaux, sur tout désordre compromettant la solidité de l'ouvrage. Elle est attachée au bien : elle vous suit.</div></div>
-    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V7z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></div><div class="card__t">Dommages-ouvrage</div><div class="card__p">Elle préfinance les réparations relevant de la décennale sans attendre qu'un tribunal désigne un responsable. Un sinistre est réparé vite, sans procédure.</div></div>
-    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L21 2M17 6l3 3M14 9l3 3"/></svg></div><div class="card__t">Aucun budget travaux</div><div class="card__p">Rien à reprendre derrière les murs, et une revente facilitée tant que les garanties courent.</div></div>
-    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="8" rx="2"/><path d="M6 17v2M12 17v3M18 17v2M5 9h14"/></svg></div><div class="card__t">Confort thermique</div><div class="card__p">Isolation et menuiseries reprises, climatisation dans toute la maison, cheminée à insert pour l'hiver.</div></div>
+    <div class="card" style="--c:#5C7488"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="card__t">Garantie décennale</div><div class="card__p">Dix ans à compter de la réception des travaux, sur tout désordre compromettant la solidité de l'ouvrage. Elle est attachée au bien : elle vous suit.</div></div>
+    <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V7z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></div><div class="card__t">Dommages-ouvrage</div><div class="card__p">Elle préfinance les réparations relevant de la décennale sans attendre qu'un tribunal désigne un responsable. Un sinistre est réparé vite, sans procédure.</div></div>
+    <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L21 2M17 6l3 3M14 9l3 3"/></svg></div><div class="card__t">Aucun budget travaux</div><div class="card__p">Rien à reprendre derrière les murs, et une revente facilitée tant que les garanties courent.</div></div>
+    <div class="card" style="--c:#C46A3C"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="8" rx="2"/><path d="M6 17v2M12 17v3M18 17v2M5 9h14"/></svg></div><div class="card__t">Confort thermique</div><div class="card__p">Isolation et menuiseries reprises, climatisation dans toute la maison, cheminée à insert pour l'hiver.</div></div>
   </div>
-  <div style="margin-top:5mm"><div class="figure" style="height:62mm"><img src="../assets/images/reception-mur-pierre.jpg" alt="La pièce de vie, pierre apparente et charpente reprise" /></div></div>
-  <div class="figure__cap">La pierre conservée, tout le reste repris</div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+
+  <div class="panel panel--pale" style="--tintPale:#EEF0E4;margin-top:4mm">
+    <div class="h3" style="margin-bottom:3mm">Ce que vous n'aurez pas à faire</div>
+    <div class="grid-2" style="gap:6mm">
+      <ul class="checks" style="margin:0">
+        <li>Refaire l'électricité ou la plomberie</li>
+        <li>Reprendre l'isolation ou les menuiseries</li>
+        <li>Poser des sols</li>
+      </ul>
+      <ul class="checks" style="margin:0">
+        <li>Créer ou rénover les salles d'eau</li>
+        <li>Installer une climatisation</li>
+        <li>Provisionner un budget travaux</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:5mm">
+    <div class="figure" style="height:31mm"><img src="../assets/images/reception-mur-pierre.jpg" alt="La pièce de vie, pierre apparente et charpente reprise" /></div>
+    <div class="figure" style="height:31mm"><img src="../assets/images/sdb-damier.jpg" alt="Une des quatre salles d'eau, entièrement neuve" /></div>
+  </div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">12</div>
 </section>
 <section class="page" data-page="13" style="--tint:#6F7551">
 
-  <div class="eyebrow">Diagnostic de performance énergétique</div>
+  <div class="hero-band" style="height:58mm"><img src="../assets/images/reception-charpente.jpg" alt="La pièce de vie inondée de lumière" /><div class="hero-band__veil"></div><div class="hero-band__t">Diagnostic de performance énergétique</div></div>
+  <div class="eyebrow">Ce que consomme la maison</div>
   <h2 class="h2">Une maison<br /><span class="italic">sobre</span>.</h2>
   <div class="rule"></div>
   <p class="body" style="max-width:62ch">
@@ -657,66 +739,54 @@ svg { display: block; }
     maison en <span class="hl">classe C</span>, et ses émissions de gaz à effet de
     serre en <span class="hl">classe A</span>, le meilleur niveau de l'échelle.
   </p>
-
-  <div style="margin-top:6mm">
-    <div class="scale__cap">Consommation d'énergie primaire · kWh/m²/an</div>
-    <div class="scale"><div class="scale__row"><span class="scale__ltr">A</span><span class="scale__bar" style="width:42%;background:#319834;color:rgba(0,0,0,.62);justify-content:flex-end">≤ 70</span></div><div class="scale__row"><span class="scale__ltr">B</span><span class="scale__bar" style="width:50%;background:#33CC31;color:rgba(0,0,0,.62);justify-content:flex-end">71 – 110</span></div><div class="scale__row is-on"><span class="scale__ltr">C</span><span class="scale__bar" style="width:58%;background:#CBFC34;color:rgba(0,0,0,.62);justify-content:flex-end">111 – 180</span><span class="scale__mark">154 kWh/m²/an</span></div><div class="scale__row"><span class="scale__ltr">D</span><span class="scale__bar" style="width:66%;background:#FBFE06;color:rgba(0,0,0,.62);justify-content:flex-end">181 – 250</span></div><div class="scale__row"><span class="scale__ltr">E</span><span class="scale__bar" style="width:75%;background:#FBCC05;color:rgba(0,0,0,.62);justify-content:flex-end">251 – 330</span></div><div class="scale__row"><span class="scale__ltr">F</span><span class="scale__bar" style="width:85%;background:#FC9935;color:rgba(0,0,0,.62);justify-content:flex-end">331 – 420</span></div><div class="scale__row"><span class="scale__ltr">G</span><span class="scale__bar" style="width:95%;background:#FC0205;color:rgba(255,255,255,.9);justify-content:flex-end">> 420</span></div></div>
+  <div class="grid-2" style="margin-top:6mm;gap:7mm">
+    <div>
+      <div class="scale__cap">Énergie primaire · <strong>154 kWh/m²/an</strong> · classe C</div>
+      <div class="scale"><div class="scale__row"><span class="scale__ltr">A</span><span class="scale__bar" style="width:42%;background:#319834;color:rgba(0,0,0,.6);justify-content:flex-end">≤ 70</span></div><div class="scale__row"><span class="scale__ltr">B</span><span class="scale__bar" style="width:50%;background:#33CC31;color:rgba(0,0,0,.6);justify-content:flex-end">71 – 110</span></div><div class="scale__row is-on"><span class="scale__ltr">C</span><span class="scale__bar" style="width:58%;background:#CBFC34;color:rgba(0,0,0,.6);justify-content:flex-end">111 – 180</span></div><div class="scale__row"><span class="scale__ltr">D</span><span class="scale__bar" style="width:66%;background:#FBFE06;color:rgba(0,0,0,.6);justify-content:flex-end">181 – 250</span></div><div class="scale__row"><span class="scale__ltr">E</span><span class="scale__bar" style="width:75%;background:#FBCC05;color:rgba(0,0,0,.6);justify-content:flex-end">251 – 330</span></div><div class="scale__row"><span class="scale__ltr">F</span><span class="scale__bar" style="width:85%;background:#FC9935;color:rgba(0,0,0,.6);justify-content:flex-end">331 – 420</span></div><div class="scale__row"><span class="scale__ltr">G</span><span class="scale__bar" style="width:95%;background:#FC0205;color:rgba(255,255,255,.9);justify-content:flex-end">> 420</span></div></div>
+    </div>
+    <div>
+      <div class="scale__cap">Gaz à effet de serre · <strong>4 kgCO₂/m²/an</strong> · classe A</div>
+      <div class="scale"><div class="scale__row is-on"><span class="scale__ltr">A</span><span class="scale__bar" style="width:42%;background:#EDE7F1;color:rgba(0,0,0,.6);justify-content:flex-end">≤ 6</span></div><div class="scale__row"><span class="scale__ltr">B</span><span class="scale__bar" style="width:50%;background:#D9CBE3;color:rgba(0,0,0,.6);justify-content:flex-end">7 – 11</span></div><div class="scale__row"><span class="scale__ltr">C</span><span class="scale__bar" style="width:58%;background:#C3ABD3;color:rgba(0,0,0,.6);justify-content:flex-end">12 – 30</span></div><div class="scale__row"><span class="scale__ltr">D</span><span class="scale__bar" style="width:66%;background:#AB8AC2;color:rgba(0,0,0,.6);justify-content:flex-end">31 – 50</span></div><div class="scale__row"><span class="scale__ltr">E</span><span class="scale__bar" style="width:75%;background:#9068AF;color:rgba(255,255,255,.9);justify-content:flex-end">51 – 70</span></div><div class="scale__row"><span class="scale__ltr">F</span><span class="scale__bar" style="width:85%;background:#74469B;color:rgba(255,255,255,.9);justify-content:flex-end">71 – 100</span></div><div class="scale__row"><span class="scale__ltr">G</span><span class="scale__bar" style="width:95%;background:#582385;color:rgba(255,255,255,.9);justify-content:flex-end">> 100</span></div></div>
+    </div>
   </div>
-
-  <div style="margin-top:6mm">
-    <div class="scale__cap">Émissions de gaz à effet de serre · kgCO₂/m²/an</div>
-    <div class="scale"><div class="scale__row is-on"><span class="scale__ltr">A</span><span class="scale__bar" style="width:42%;background:#EDE7F1;color:rgba(0,0,0,.62);justify-content:flex-end">≤ 6</span><span class="scale__mark">4 kgCO₂/m²/an</span></div><div class="scale__row"><span class="scale__ltr">B</span><span class="scale__bar" style="width:50%;background:#D9CBE3;color:rgba(0,0,0,.62);justify-content:flex-end">7 – 11</span></div><div class="scale__row"><span class="scale__ltr">C</span><span class="scale__bar" style="width:58%;background:#C3ABD3;color:rgba(0,0,0,.62);justify-content:flex-end">12 – 30</span></div><div class="scale__row"><span class="scale__ltr">D</span><span class="scale__bar" style="width:66%;background:#AB8AC2;color:rgba(0,0,0,.62);justify-content:flex-end">31 – 50</span></div><div class="scale__row"><span class="scale__ltr">E</span><span class="scale__bar" style="width:75%;background:#9068AF;color:rgba(255,255,255,.9);justify-content:flex-end">51 – 70</span></div><div class="scale__row"><span class="scale__ltr">F</span><span class="scale__bar" style="width:85%;background:#74469B;color:rgba(255,255,255,.9);justify-content:flex-end">71 – 100</span></div><div class="scale__row"><span class="scale__ltr">G</span><span class="scale__bar" style="width:95%;background:#582385;color:rgba(255,255,255,.9);justify-content:flex-end">> 100</span></div></div>
-  </div>
-
   <div class="cards" style="margin-top:6mm">
-    <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div class="card__t">154 kWh/m²/an</div><div class="card__p">Consommation en énergie primaire. Classe C, au-dessus de la moyenne du parc ancien.</div></div>
-    <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 014-4 5.5 5.5 0 0110.5-1.5A3.5 3.5 0 0121 15z"/><path d="M7 19h10"/></svg></div><div class="card__t">4 kgCO₂/m²/an</div><div class="card__p">Émissions de gaz à effet de serre. Classe A, le meilleur niveau de l'échelle.</div></div>
+    <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div class="card__t">Classe C</div><div class="card__p">154 kWh/m²/an en énergie primaire, loin des classes F et G qui pèsent sur le parc ancien.</div></div>
+    <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15a4 4 0 014-4 5.5 5.5 0 0110.5-1.5A3.5 3.5 0 0121 15z"/><path d="M7 19h10"/></svg></div><div class="card__t">Classe A</div><div class="card__p">4 kgCO₂/m²/an : le meilleur niveau de l'échelle des émissions.</div></div>
   </div>
-
-  <p class="body" style="margin-top:5mm;font-size:7.8pt">
+  <p class="body" style="margin-top:4mm;font-size:7.6pt">
     Valeurs issues du diagnostic de performance énergétique du bien. Montant estimé
     des dépenses annuelles d'énergie communiqué avec le diagnostic complet.
   </p>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">13</div>
 </section>
 <section class="page" data-page="14" style="--tint:#5C7488">
 
-  <div class="eyebrow">Les prestations</div>
+  <div class="hero-band" style="height:48mm"><img src="../assets/images/cuisine-bleue.jpg" alt="La cuisine ouverte et son plan de travail" /><div class="hero-band__veil"></div><div class="hero-band__t">Les prestations</div></div>
+  <div class="eyebrow">Tout, dans le détail</div>
   <h2 class="h2">Les détails<br />qui <span class="italic">comptent</span>.</h2>
   <div class="rule"></div>
-  <ul class="rows rows--tight">
-    <li><span class="rows__k">Surface habitable</span><span class="rows__v">160 m²</span></li>
-    <li><span class="rows__k">Parcelle</span><span class="rows__v">400 m²</span></li>
-    <li><span class="rows__k">Nombre de pièces</span><span class="rows__v">5</span></li>
-    <li><span class="rows__k">Pièce de vie</span><span class="rows__v">Plus de 50 m²</span></li>
-    <li><span class="rows__k">Chambres</span><span class="rows__v">4, chacune avec sa salle d'eau</span></li>
-    <li><span class="rows__k">Suite parentale de plain-pied</span><span class="rows__v">1</span></li>
-    <li><span class="rows__k">Mezzanine</span><span class="rows__v">Mansardée, vue mer et Cap Canaille</span></li>
-    <li><span class="rows__k">WC indépendant</span><span class="rows__v">Niveau jardin</span></li>
-    <li><span class="rows__k">Sols</span><span class="rows__v">Chêne massif, point de Hongrie</span></li>
-    <li><span class="rows__k">Cuisine</span><span class="rows__v">Ouverte, neuve et équipée</span></li>
-    <li><span class="rows__k">Chauffage</span><span class="rows__v">Cheminée à insert et climatisation</span></li>
-    <li><span class="rows__k">Extérieurs</span><span class="rows__v">Jardin paysagé, arrosage automatique, terrasses en pierre</span></li>
-    <li><span class="rows__k">Piscine</span><span class="rows__v">Béton armé</span></li>
-    <li><span class="rows__k">Cuisine d'été</span><span class="rows__v">Équipée</span></li>
-    <li><span class="rows__k">Cave</span><span class="rows__v">6 m²</span></li>
-    <li><span class="rows__k">Stationnement</span><span class="rows__v">1 place privative</span></li>
-    <li><span class="rows__k">Rénovation</span><span class="rows__v">Intégrale, livrée en 2026</span></li>
-    <li><span class="rows__k">Garanties</span><span class="rows__v">Décennale et dommages-ouvrage</span></li>
-    <li><span class="rows__k">Performance</span><span class="rows__v">DPE C · GES A</span></li>
-    <li><span class="rows__k">Taxe foncière</span><span class="rows__v">1 000 € par an</span></li>
-  </ul>
-  <p class="body" style="margin-top:4mm;font-size:7.8pt">
+  <div class="groups">
+    <div class="group" style="--c:#5C7488"><div class="group__h"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 3v18"/></svg><span class="group__t">Surfaces</span></div><ul><li><span class="group__k">Habitable</span><span class="group__v">160 m²</span></li><li><span class="group__k">Parcelle</span><span class="group__v">400 m²</span></li><li><span class="group__k">Pièce de vie</span><span class="group__v">Plus de 50 m²</span></li><li><span class="group__k">Pièces</span><span class="group__v">5</span></li></ul></div>
+    <div class="group" style="--c:#3E8E96"><div class="group__h"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18V9a2 2 0 012-2h14a2 2 0 012 2v9"/><path d="M3 14h18M7 7V5h10v2"/></svg><span class="group__t">Distribution</span></div><ul><li><span class="group__k">Chambres</span><span class="group__v">4, avec salle d'eau</span></li><li><span class="group__k">Suite de plain-pied</span><span class="group__v">1</span></li><li><span class="group__k">Mezzanine</span><span class="group__v">Vue mer et Cap Canaille</span></li><li><span class="group__k">WC indépendant</span><span class="group__v">Niveau jardin</span></li></ul></div>
+    <div class="group" style="--c:#B99A6B"><div class="group__h"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 4c0 5 0 11 0 16M12 4c0 5 0 11 0 16M16 4c0 5 0 11 0 16"/></svg><span class="group__t">Intérieur</span></div><ul><li><span class="group__k">Sols</span><span class="group__v">Chêne, point de Hongrie</span></li><li><span class="group__k">Cuisine</span><span class="group__v">Ouverte et équipée</span></li><li><span class="group__k">Cheminée</span><span class="group__v">Foyer à insert</span></li><li><span class="group__k">Climatisation</span><span class="group__v">Toute la maison</span></li></ul></div>
+    <div class="group" style="--c:#6F7551"><div class="group__h"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12c0-3 2-5 5-5 0 3-2 5-5 5zM12 14c0-3-2-5-5-5 0 3 2 5 5 5z"/><path d="M8 22h8"/></svg><span class="group__t">Extérieurs</span></div><ul><li><span class="group__k">Jardin</span><span class="group__v">Paysagé, arrosage auto.</span></li><li><span class="group__k">Terrasses</span><span class="group__v">En pierre</span></li><li><span class="group__k">Piscine</span><span class="group__v">Béton armé</span></li><li><span class="group__k">Cuisine d'été</span><span class="group__v">Équipée</span></li></ul></div>
+    <div class="group" style="--c:#C46A3C"><div class="group__h"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1 6a4 4 0 01-6 0z"/><path d="M12 9v8M8 21h8"/></svg><span class="group__t">Annexes et charges</span></div><ul><li><span class="group__k">Cave</span><span class="group__v">6 m²</span></li><li><span class="group__k">Stationnement</span><span class="group__v">1 place privative</span></li><li><span class="group__k">Taxe foncière</span><span class="group__v">1 000 € / an</span></li></ul></div>
+    <div class="group" style="--c:#5C7488"><div class="group__h"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="group__t">Garanties et performance</span></div><ul><li><span class="group__k">Rénovation</span><span class="group__v">Intégrale, 2026</span></li><li><span class="group__k">Garanties</span><span class="group__v">Décennale et D.-O.</span></li><li><span class="group__k">DPE</span><span class="group__v">C · 154 kWh/m²/an</span></li><li><span class="group__k">GES</span><span class="group__v">A · 4 kgCO₂/m²/an</span></li></ul></div>
+  </div>
+  <p class="body" style="margin-top:4mm;font-size:7.6pt">
     Surfaces indiquées par le vendeur, sous réserve de mesurage. Informations non
     contractuelles, susceptibles d'évoluer jusqu'à la signature.
   </p>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">14</div>
 </section>
-<section class="page" data-page="15" style="--tint:#5C7488">
+<section class="page" data-page="15" style="--tint:#B99A6B">
 
-  <div class="eyebrow">Acquisition</div>
+  <div class="hero-band" style="height:50mm"><img src="../assets/images/vue-aerienne-piscine.jpg" alt="La maison, son jardin et sa piscine vus du ciel" /><div class="hero-band__veil"></div><div class="hero-band__t">Acquisition</div></div>
+  <div class="eyebrow">Ce qu'il faut savoir</div>
   <h2 class="h2">Le <span class="italic">prix</span>.</h2>
   <div class="rule"></div>
 
@@ -726,27 +796,30 @@ svg { display: block; }
     <div class="price__n">Honoraires d'agence à la charge du vendeur.</div>
   </div>
 
-  <div class="cards" style="margin-top:6mm">
-    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V7z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></div><div class="card__t">Ce qui est inclus</div><div class="card__p">Le bien tel que présenté dans ce dossier : maison rénovée, jardin paysagé, piscine et cuisine d'été, cave et place de stationnement.</div></div>
-    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="card__t">Ce qui vous suit</div><div class="card__p">La garantie décennale et l'assurance dommages-ouvrage, attachées au bien et non au propriétaire.</div></div>
-    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M6 17v2M18 17v2"/><path d="M4 17l1.5-5.5A2 2 0 017.4 10h9.2a2 2 0 011.9 1.5L20 17"/><circle cx="7.5" cy="14.5" r="1"/><circle cx="16.5" cy="14.5" r="1"/></svg></div><div class="card__t">Frais annexes</div><div class="card__p">Frais de notaire dans l'ancien, taxe foncière de 1 000 € par an. Aucun budget travaux à prévoir.</div></div>
-    <div class="card"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div class="card__t">Charges d'énergie</div><div class="card__p">DPE en classe C et émissions en classe A : une maison ancienne aux charges maîtrisées.</div></div>
+  <div class="cards" style="margin-top:5mm">
+    <div class="card" style="--c:#5C7488"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2L21 2M17 6l3 3M14 9l3 3"/></svg></div><div class="card__t">Ce qui est inclus</div><div class="card__p">La maison rénovée, le jardin paysagé, la piscine et la cuisine d'été, la cave et la place de stationnement.</div></div>
+    <div class="card" style="--c:#3E8E96"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="card__t">Ce qui vous suit</div><div class="card__p">La garantie décennale et l'assurance dommages-ouvrage, attachées au bien et non au propriétaire.</div></div>
+    <div class="card" style="--c:#B99A6B"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V7z"/><path d="M14 2v5h5M9 13h6M9 17h4"/></svg></div><div class="card__t">Frais annexes</div><div class="card__p">Frais de notaire dans l'ancien, taxe foncière de 1 000 € par an. Aucun budget travaux à prévoir.</div></div>
+    <div class="card" style="--c:#6F7551"><div class="card__i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div><div class="card__t">Charges d'énergie</div><div class="card__p">DPE en classe C et émissions en classe A : une maison ancienne aux charges maîtrisées.</div></div>
   </div>
 
-  <div class="panel panel--pale" style="--tintPale:#E7EDF2;margin-top:6mm">
-    <div class="h3">Diffusion confidentielle</div>
-    <p class="body" style="margin:0;font-size:9pt">
-      Le bien n'est pas diffusé en vitrine. Nous qualifions chaque demande avant
-      d'organiser la moindre visite, par respect pour le vendeur et pour ne pas
-      vous faire perdre votre temps.
-    </p>
+  <div class="mosaic" style="margin-top:6mm">
+    <div class="figure figure--tall"><img src="../assets/images/piscine-jardin.jpg" alt="La piscine et le jardin" /></div>
+    <div class="figure"><img src="../assets/images/reception-mur-pierre.jpg" alt="La pièce de vie et son mur de pierre" /></div>
+    <div class="figure"><img src="../assets/images/sdb-terracotta.jpg" alt="La salle d'eau terracotta" /></div>
+    <div class="figure"><img src="../assets/images/mezzanine.jpg" alt="La mezzanine sous verrières" /></div>
+    <div class="figure"><img src="../assets/images/cassis/calanque-en-vau.jpg" alt="La calanque d'En-Vau" /></div>
+    <div class="figure"><img src="../assets/images/chambre-rayures.jpg" alt="Une chambre" /></div>
+    <div class="figure"><img src="../assets/images/cassis/port-de-cassis.jpg" alt="Le port de Cassis" /></div>
   </div>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">15</div>
 </section>
-<section class="page" data-page="16" style="--tint:#5C7488">
+<section class="page" data-page="16" style="--tint:#3E8E96">
 
-  <div class="eyebrow">Comment ça se passe</div>
+  <div class="hero-band" style="height:46mm"><img src="../assets/images/cassis/cap-canaille-panorama.jpg" alt="Le Cap Canaille et la baie de Cassis" /><div class="hero-band__veil"></div><div class="hero-band__t">Comment ça se passe</div></div>
+  <div class="eyebrow">La suite</div>
   <h2 class="h2">Quatre étapes,<br />sans <span class="italic">pression</span>.</h2>
   <div class="rule"></div>
   <ul class="steps">
@@ -756,30 +829,37 @@ svg { display: block; }
     <li><div class="steps__n">04</div><div><div class="steps__t">L'acquisition</div><div class="steps__p">Offre, compromis, financement, notaire. Nous restons à vos côtés jusqu'à la remise des clés.</div></div></li>
   </ul>
 
-  <div class="panel panel--dark" style="margin-top:7mm">
-    <div class="h3" style="font-family:var(--serif);font-size:15pt;margin-bottom:3mm">Prodigio</div>
-    <p class="body" style="margin-bottom:4mm">Immobilier d'exception</p>
-    <ul class="rows rows--tight" style="border-top-color:rgba(247,245,240,.22)">
-      <li style="border-bottom-color:rgba(247,245,240,.22)"><span class="rows__k" style="color:var(--accent-light)">Le bien</span><span class="rows__v" style="color:var(--bg)">Villa Jean Jaurès</span></li>
-      <li style="border-bottom-color:rgba(247,245,240,.22)"><span class="rows__k" style="color:var(--accent-light)">Commune</span><span class="rows__v" style="color:var(--bg)">Cassis (13260)</span></li>
-      <li style="border-bottom-color:rgba(247,245,240,.22)"><span class="rows__k" style="color:var(--accent-light)">Prix de vente</span><span class="rows__v" style="color:var(--bg)">1 490 000 €</span></li>
-      <li style="border-bottom-color:rgba(247,245,240,.22)"><span class="rows__k" style="color:var(--accent-light)">Délai de réponse</span><span class="rows__v" style="color:var(--bg)">24 heures ouvrées</span></li>
-    </ul>
+  <div class="panel panel--dark" style="margin-top:6mm;display:grid;grid-template-columns:1.15fr .85fr;gap:6mm;align-items:center">
+    <div>
+      <div class="h3" style="font-family:var(--serif);font-size:15pt;margin-bottom:2mm">Une question ?</div>
+      <p class="body" style="margin:0;font-size:9pt">
+        Écrivez-nous sur WhatsApp : nous répondons sous vingt-quatre heures ouvrées,
+        sans engagement de votre part.
+      </p>
+    </div>
+    <div style="text-align:center">
+      <a class="wa-btn" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+        Écrire sur WhatsApp
+      </a>
+    </div>
   </div>
 
-  <div class="panel panel--pale" style="--tintPale:#E7EDF2;margin-top:5mm;text-align:center">
-    <div class="h3">Nous joindre</div>
-    <p class="body" style="margin:0;font-size:9pt">Téléphone, e-mail et lien WhatsApp : à renseigner avant diffusion du dossier.</p>
-  </div>
+  <ul class="rows rows--tight" style="margin-top:5mm">
+    <li><span class="rows__k">Le bien</span><span class="rows__v">Villa Jean Jaurès</span></li>
+    <li><span class="rows__k">Commune</span><span class="rows__v">Cassis (13260)</span></li>
+    <li><span class="rows__k">Prix de vente</span><span class="rows__v">1 490 000 €</span></li>
+    <li><span class="rows__k">Délai de réponse</span><span class="rows__v">24 heures ouvrées</span></li>
+  </ul>
 
-  <p class="body" style="margin-top:6mm;font-size:7.6pt;text-align:center;color:var(--soft)">
-    Document et photographies non contractuels. Brochure confidentielle, destinée au
-    seul usage de son destinataire.<br />
+  <p class="body" style="margin-top:5mm;font-size:7.4pt;text-align:center;color:var(--soft)">
+    Document et photographies non contractuels.<br />
     Vues de Cassis : Chabe01, kallerna et Jean-Christophe Benoist, via Wikimedia Commons
     (CC BY-SA 4.0 et CC BY 3.0), recadrées.<br />
     © 2026 Prodigio · Tous droits réservés.
   </p>
-  <div class="page-brand">Prodigio · Immobilier d'exception</div>
+  <a class="page-wa" href="https://wa.me/33625773592" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.2.8.9-3.1-.2-.3c-.8-1.3-1.3-2.8-1.3-4.4C3.6 7.4 7.4 3.6 12 3.6s8.4 3.8 8.4 8.4-3.8 8.2-8.4 8.2z"/><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 5 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>Une question ? Écrivez-nous</a>
+  <div class="page-brand">Prodigio</div>
   <div class="page-num">16</div>
 </section>
 </div>
@@ -833,12 +913,24 @@ svg { display: block; }
     x0 = null;
   }, { passive: true });
 
-  /* La page A4 fait 210 mm : on la réduit pour qu'elle tienne dans les
-     fenêtres plus étroites, sans toucher à la mise en page d'impression. */
+  /* Une page A4 fait 210 x 297 mm, soit 794 x 1123 px : plus haute que la
+     plupart des fenêtres. On la réduit donc sur les deux dimensions pour
+     qu'elle tienne entière à l'écran, barre de navigation comprise. La mise
+     en page d'impression, elle, n'est pas touchée. */
+  var PX_PAR_MM = 96 / 25.4;
+  var PAGE_L = 210 * PX_PAR_MM;
+  var PAGE_H = 297 * PX_PAR_MM;
+  var MARGE_HAUT = 20;
+  var PLACE_BARRE = 118;
+
   function fit() {
-    var mm = 210 * (96 / 25.4);
-    var available = Math.min(window.innerWidth - 32, mm);
-    document.documentElement.style.setProperty('--scale', (available / mm).toFixed(4));
+    var dispoL = Math.min(window.innerWidth - 32, PAGE_L);
+    var dispoH = window.innerHeight - MARGE_HAUT - PLACE_BARRE;
+    var s = Math.min(dispoL / PAGE_L, dispoH / PAGE_H, 1);
+    /* Fenêtre vraiment basse : plutôt que de rendre le texte illisible,
+       on revient à un ajustement en largeur et on laisse défiler. */
+    if (s < 0.35) s = dispoL / PAGE_L;
+    document.documentElement.style.setProperty('--scale', s.toFixed(4));
   }
   fit();
   window.addEventListener('resize', fit);
