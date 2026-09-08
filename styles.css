@@ -482,6 +482,26 @@ a { color: inherit; }
 }
 .hero__features svg { color: var(--accent-light); flex-shrink: 0; }
 
+/* --- visuel du bien, dans le flux (écrans étroits) --- */
+.hero__shot { display: none; position: relative; margin: 1.75rem 0 0; }
+.hero__shot img, .hero__shot video {
+  width: 100%; aspect-ratio: 3/2; object-fit: cover; display: block;
+  border-radius: var(--radius); box-shadow: 0 18px 44px rgba(20,31,39,.42);
+}
+.hero__shot-tag {
+  position: absolute; top: 12px; left: 12px;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: 100px;
+  background: rgba(20,31,39,.62); backdrop-filter: blur(8px);
+  font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
+  color: #fff;
+}
+.hero__shot-tag .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-light); box-shadow: 0 0 8px var(--accent-light);
+}
+@media (max-width: 1200px) { .hero__shot { display: block; } }
+
 /* --- carte de capture --- */
 .hero__form-wrap { position: relative; }
 .hero__form-card {

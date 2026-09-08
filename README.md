@@ -38,7 +38,14 @@ Elle n'est pas chargée du tout sur mobile (moins de 761 px), quand l'utilisateu
 a désactivé les animations, ni sur connexion lente ou en mode données réduites.
 Elle se met en pause dès que le hero sort du champ.
 
-Deux sources possibles, réglées en tête de `main.js` :
+Sur les écrans étroits (moins de 1200 px), où la carte de capture passe sous
+le texte, une photographie du bien s'intercale entre les deux : c'est
+l'équivalent du lecteur vidéo mobile du site du chalet. Elle est visible sans
+défiler, et la carte apparaît juste en dessous. Bloc `.hero__shot` dans
+`index.html` : quand les vidéos du bien seront disponibles, remplacer le
+`<img>` par un `<video muted loop playsinline>`, la mise en forme suit.
+
+Deux sources possibles pour le fond animé, réglées en tête de `main.js` :
 
 | Constante | Rôle |
 |---|---|
