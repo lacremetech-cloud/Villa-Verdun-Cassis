@@ -767,7 +767,8 @@ a { color: inherit; }
 .modal.is-open { display: block; }
 .modal__backdrop { position: absolute; inset: 0; background: rgba(24,36,45,.72); backdrop-filter: blur(4px); }
 .modal__panel {
-  position: relative; max-width: 520px; margin: 6vh auto; background: var(--bg);
+  position: relative; max-width: 560px; width: calc(100% - 2rem);
+  margin: 6vh auto; background: var(--bg);
   border-radius: var(--radius); box-shadow: var(--shadow-lg);
   max-height: 88vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
 }
@@ -775,11 +776,20 @@ a { color: inherit; }
   position: absolute; top: 12px; right: 12px; width: 40px; height: 40px;
   background: none; border: 0; color: var(--muted-fg); font-size: 26px; line-height: 1;
 }
-.modal__head { padding: 40px 36px 0; }
-.modal__title { font-family: var(--font-serif); font-size: 30px; font-weight: 400; line-height: 1.12; margin: 0 0 10px; }
-.modal__title em { font-style: italic; color: var(--accent); }
-.modal__p { font-size: 14.5px; color: var(--muted-fg); margin: 0; }
-.modal__form { padding: 24px 36px 36px; min-height: 220px; }
+.modal__head { padding: 44px 40px 0; }
+.modal__head .eyebrow { font-size: 10.5px; margin-bottom: 14px; }
+.modal__title {
+  font-family: var(--font-serif); font-weight: 500;
+  font-size: clamp(24px, 2.6vw, 31px); line-height: 1.14;
+  letter-spacing: .004em; text-transform: uppercase;
+  color: var(--fg); margin: 0 0 14px;
+}
+.modal__lede { font-size: 15.5px; line-height: 1.6; color: var(--muted-fg); margin: 0; }
+.modal__form { padding: 28px 40px 36px; min-height: 220px; position: relative; }
+@media (max-width: 520px) {
+  .modal__head { padding: 34px 24px 0; }
+  .modal__form { padding: 22px 24px 28px; }
+}
 /* Le formulaire est servi par Systeme.io dans un iframe : il apporte ses
    propres styles. On se contente de l'empêcher de déborder de la modale,
    le script lui fixant une largeur en pixels à la réception de sa taille. */
