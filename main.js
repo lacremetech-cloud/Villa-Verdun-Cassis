@@ -162,15 +162,79 @@
 
   /* =====================================================================
      MODALE BROCHURE
-     Le formulaire est un formulaire HTML classique posté vers Systeme.io
-     (tunnel 44251769), écrit directement dans la page. Aucun script tiers
-     à charger, donc aucune attente au premier clic.
      ===================================================================== */
   var modal = document.getElementById('brochureModal');
+  var formContainer = document.getElementById('brochureFormContainer');
   var openBtns = document.querySelectorAll('.js-open-brochure');
   var closeEls = document.querySelectorAll('.js-close-modal');
   var scrollY = 0;
   var lastFocused = null;
+  var formLoaded = false;
+
+  /* Tunnel Systeme.io dédié au bien. */
+  var FORM_SCRIPT_URL =
+    'https://lecambredaze.systeme.io/public/remote/page/44251769b40171ff4121fae3e8fb34b27213ff1b.js';
+
+  /* Le script n'est injecté qu'au premier clic sur un appel à l'action :
+     cela évite qu'iOS Safari ouvre sa barre d'autocomplétion dès l'arrivée
+     sur la page, et épargne un iframe tiers aux visiteurs qui ne demandent
+     pas la brochure. */
+  function loadForm() {
+    if (formLoaded || !formContainer) return;
+    formLoaded = true;
+
+    var spinner = formContainer.querySelector('.modal__spinner');
+    function done() {
+      if (spinner && spinner.parentNode) spinner.parentNode.removeChild(spinner);
+    }
+
+    /* Si le formulaire ne s'affiche pas (script bloqué, réseau coupé,
+       extension), on propose WhatsApp plutôt que de laisser une boîte vide. */
+    function fallback() {
+      done();
+      if (formContainer.querySelector('iframe')) return;
+      var p = document.createElement('p');
+      p.style.cssText = 'font-size:14.5px;line-height:1.7;color:#5E7386;margin:0 0 16px';
+      p.textContent = 'Le formulaire ne s\'affiche pas ? Écrivez-nous directement, ' +
+                      'nous vous transmettons le dossier sous 24 heures ouvrées.';
+      var a = document.createElement('a');
+      a.className = 'btn btn--primary btn--block';
+      a.href = 'https://wa.me/33625773592';
+      a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.textContent = 'Écrire sur WhatsApp';
+      formContainer.appendChild(p);
+      formContainer.appendChild(a);
+    }
+
+    /* Systeme.io insère son iframe juste après le script lui-même
+       (document.currentScript) : il doit donc être ajouté dans ce
+       conteneur, et surtout pas dans le <head>. */
+    var script = document.createElement('script');
+    script.id = 'form-script-tag-25381637';
+    script.src = FORM_SCRIPT_URL;
+    script.async = true;
+    script.onerror = fallback;
+    formContainer.appendChild(script);
+
+    /* L'iframe reste masqué tant que Systeme.io n'a pas renvoyé sa hauteur
+       par postMessage. On retire l'attente à ce moment précis. */
+    if ('MutationObserver' in window) {
+      var obs = new MutationObserver(function () {
+        var f = formContainer.querySelector('iframe');
+        if (f && f.style.visibility !== 'hidden' && f.offsetHeight > 40) {
+          done();
+          obs.disconnect();
+        }
+      });
+      obs.observe(formContainer, {
+        childList: true, subtree: true,
+        attributes: true, attributeFilter: ['style', 'height', 'width']
+      });
+      setTimeout(function () { obs.disconnect(); fallback(); }, 10000);
+    } else {
+      setTimeout(fallback, 6000);
+    }
+  }
 
   /* Verrouillage du scroll compatible iOS : on fige le body en position
      fixe et on mémorise la position pour la restaurer à la fermeture. */
@@ -190,6 +254,7 @@
   function openModal() {
     if (!modal) return;
     lastFocused = document.activeElement;
+    loadForm();
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
     lockScroll();

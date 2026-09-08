@@ -70,20 +70,29 @@ intérieure de la brochure, en bouton sur sa dernière page, et au pied du site.
 
 ## Formulaire de capture
 
-Le bouton « Recevoir la brochure » ouvre une modale contenant un formulaire HTML
-classique posté vers le tunnel Systeme.io **44251769** :
+Le bouton « Recevoir la brochure » ouvre une modale dans laquelle est injecté le
+script du tunnel Systeme.io, comme sur le site du chalet :
 
 ```
-POST https://systeme.io/embedded/44251769/subscription
-first_name · surname · email · phone_number
+https://lecambredaze.systeme.io/public/remote/page/44251769b40171ff4121fae3e8fb34b27213ff1b.js
 ```
 
-Les attributs `name` sont ceux attendus par Systeme.io : **ne pas les renommer**.
-Les types HTML ont en revanche été corrigés (`email` et `tel` au lieu de `text`),
-ce qui active la validation du navigateur et le bon clavier sur mobile.
+Trois points à connaître :
 
-Après validation, le navigateur quitte le site pour la page de remerciement du
-tunnel. **C'est là qu'il faut pointer vers la brochure** :
+1. **Le script s'auto-positionne.** Il insère son iframe juste après lui-même
+   (`document.currentScript`). Il doit donc être ajouté **dans le conteneur**
+   `#brochureFormContainer`, jamais dans le `<head>`.
+2. **Il n'est injecté qu'au premier clic** sur un appel à l'action. C'est le
+   choix retenu sur le chalet : cela évite qu'iOS Safari ouvre sa barre
+   d'autocomplétion dès l'arrivée sur la page, et épargne un iframe tiers aux
+   visiteurs qui ne demandent pas la brochure.
+3. **L'iframe reste masqué** tant que Systeme.io n'a pas renvoyé sa hauteur par
+   `postMessage`. L'attente est donc retirée à ce moment précis, et non au
+   chargement du script. Si rien n'arrive au bout de dix secondes, un lien
+   WhatsApp de secours s'affiche plutôt qu'une boîte vide.
+
+Après validation, le visiteur arrive sur la page de remerciement du tunnel.
+**C'est là qu'il faut pointer vers la brochure** :
 
 ```
 https://villa-jeanjaures-cassis.vercel.app/brochure/
