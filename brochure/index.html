@@ -210,20 +210,52 @@ svg { display: block; }
   max-width: 100%; margin: 0 auto; position: relative; overflow: hidden;
 }
 
+/* L'étage porte la réduction ; les pages, superposées à l'intérieur,
+   gardent leur transform disponible pour la rotation. La perspective est
+   posée ici pour s'appliquer directement à elles. */
+.stage {
+  position: relative;
+  width: 210mm; height: 297mm;
+  transform: scale(var(--scale)); transform-origin: top left;
+  perspective: 1800px;
+}
+
 .page {
-  width: 210mm; height: 297mm; margin: 0 auto;
-  margin-bottom: 0;
-  background: var(--bg); position: relative; overflow: hidden;
+  position: absolute; top: 0; left: 0;
+  width: 210mm; height: 297mm;
+  background: var(--bg); overflow: hidden;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
   box-shadow: 0 16px 48px rgba(0,0,0,.42);
   padding: 20mm 18mm 24mm;
   display: none; page-break-after: always;
-  /* transform plutôt que zoom : zoom n'est pas interprété de la même façon
-     par tous les navigateurs, et rognait la page sur iOS Safari. L'origine
-     est en haut à gauche pour que le conteneur, dimensionné en JavaScript,
-     coïncide exactement avec la page réduite. */
-  transform: scale(var(--scale)); transform-origin: top left;
+  transform-origin: left center;
 }
 .page.is-active { display: block; }
+
+/* ---------- tourner de page ---------- */
+/* Ombre portée sur la feuille en train de tourner : c'est elle qui donne
+   l'impression d'épaisseur. */
+.page::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 9;
+  background: linear-gradient(to right, rgba(14,24,31,.50), rgba(14,24,31,0) 58%);
+  opacity: 0;
+}
+.page.tourne-avant { animation: pageAvant 560ms cubic-bezier(.36,.05,.62,.98) forwards; }
+.page.tourne-arriere { animation: pageArriere 560ms cubic-bezier(.38,.02,.64,.95) forwards; }
+.page.tourne-avant::after { animation: ombreAvant 560ms ease-in forwards; }
+.page.tourne-arriere::after { animation: ombreArriere 560ms ease-out forwards; }
+
+/* La feuille disparaît d'elle-même à 90 degrés, vue par la tranche : aller
+   au-delà n'ajouterait que du temps mort, la face arrière étant masquée. */
+@keyframes pageAvant   { from { transform: rotateY(0deg); }   to { transform: rotateY(-90deg); } }
+@keyframes pageArriere { from { transform: rotateY(-90deg); } to { transform: rotateY(0deg); } }
+@keyframes ombreAvant   { from { opacity: 0; }  to { opacity: .5; } }
+@keyframes ombreArriere { from { opacity: .5; } to { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .page.tourne-avant, .page.tourne-arriere,
+  .page.tourne-avant::after, .page.tourne-arriere::after { animation: none !important; }
+}
 .page:last-child { page-break-after: auto; }
 
 /* filet de couleur en tête de page, catégorie par catégorie */
@@ -420,7 +452,10 @@ svg { display: block; }
   html, body { background: #fff; }
   body { padding: 0; }
   .brochure { width: auto !important; height: auto !important; overflow: visible !important; }
-  .page { display: block !important; box-shadow: none; margin: 0; transform: none !important; width: 210mm; height: 297mm; }
+  .stage { transform: none !important; perspective: none !important; width: auto !important; height: auto !important; position: static !important; }
+  .page { display: block !important; position: relative !important; box-shadow: none; margin: 0;
+          transform: none !important; animation: none !important; width: 210mm; height: 297mm; }
+  .page::after { display: none !important; }
   .bar { display: none !important; }
   .page-wa, .wa-btn { background: #25D366 !important; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -432,6 +467,7 @@ svg { display: block; }
 <body>
 
 <div class="brochure" id="brochure">
+<div class="stage" id="stage">
 <section class="page cover is-active" data-page="1">
   <div class="cover__img"><img src="../assets/images/vue-aerienne-mer.jpg" alt="La villa vue du ciel, les toits de Cassis et la Méditerranée" /></div>
   <div class="cover__scrim"></div>
@@ -877,6 +913,7 @@ svg { display: block; }
   <div class="page-num">16</div>
 </section>
 </div>
+</div>
 
 <nav class="bar" aria-label="Navigation de la brochure">
   <button class="bar__btn" id="prev" type="button" aria-label="Page précédente">
@@ -901,21 +938,74 @@ svg { display: block; }
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
-  function show(i) {
-    idx = Math.max(0, Math.min(total - 1, i));
-    pages.forEach(function (p, n) { p.classList.toggle('is-active', n === idx); });
+  /* Fonction de fin de l'animation en cours, gardée sous la main pour
+     pouvoir la solder si le lecteur enchaîne les pages sans attendre. */
+  var solder = null;
+  var sansAnimation = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function majBarre() {
     count.textContent = pad(idx + 1) + ' / ' + pad(total);
     prev.disabled = idx === 0;
     next.disabled = idx === total - 1;
-    window.scrollTo(0, 0);
   }
 
-  prev.addEventListener('click', function () { show(idx - 1); });
-  next.addEventListener('click', function () { show(idx + 1); });
+  function afficherSeule(i) {
+    pages.forEach(function (p, n) { p.classList.toggle('is-active', n === i); });
+  }
+
+  /* Tourner de page : la feuille pivote autour de son bord gauche.
+     En avant, c'est la page quittée qui tourne et découvre la suivante ;
+     en arrière, c'est la page rappelée qui revient par-dessus. */
+  function show(cible, sens) {
+    cible = Math.max(0, Math.min(total - 1, cible));
+    /* Un clic pendant l'animation ne doit pas être perdu : on solde la
+       précédente sur-le-champ plutôt que d'ignorer la demande. */
+    if (solder) solder();
+    if (cible === idx) return;
+
+    if (sansAnimation) {
+      idx = cible; afficherSeule(idx); majBarre(); window.scrollTo(0, 0);
+      return;
+    }
+
+    var sortante = pages[idx];
+    var entrante = pages[cible];
+    var avant = (sens || (cible > idx ? 1 : -1)) > 0;
+    var tournante = avant ? sortante : entrante;
+    var classe = avant ? 'tourne-avant' : 'tourne-arriere';
+
+    sortante.classList.add('is-active');
+    entrante.classList.add('is-active');
+    /* La feuille qui tourne passe au-dessus de celle qu'on découvre. */
+    tournante.style.zIndex = '3';
+    (avant ? entrante : sortante).style.zIndex = '1';
+
+    idx = cible;
+    majBarre();
+    window.scrollTo(0, 0);
+
+    var termine = function () {
+      clearTimeout(filet);
+      tournante.removeEventListener('animationend', termine);
+      tournante.classList.remove(classe);
+      sortante.style.zIndex = '';
+      entrante.style.zIndex = '';
+      afficherSeule(idx);
+      solder = null;
+    };
+    solder = termine;
+    /* Filet si animationend ne se déclenche pas (onglet en arrière-plan). */
+    var filet = setTimeout(termine, 900);
+    tournante.addEventListener('animationend', termine);
+    tournante.classList.add(classe);
+  }
+
+  prev.addEventListener('click', function () { show(idx - 1, -1); });
+  next.addEventListener('click', function () { show(idx + 1, 1); });
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowLeft' || e.key === 'PageUp') show(idx - 1);
-    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') show(idx + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') show(idx - 1, -1);
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') show(idx + 1, 1);
   });
 
   var x0 = null;
@@ -923,7 +1013,7 @@ svg { display: block; }
   document.addEventListener('touchend', function (e) {
     if (x0 === null) return;
     var d = e.changedTouches[0].clientX - x0;
-    if (Math.abs(d) > 60) show(idx + (d < 0 ? 1 : -1));
+    if (Math.abs(d) > 60) show(idx + (d < 0 ? 1 : -1), d < 0 ? 1 : -1);
     x0 = null;
   }, { passive: true });
 
@@ -964,7 +1054,9 @@ svg { display: block; }
     e.preventDefault(); window.print();
   });
 
-  show(0);
+  idx = 0;
+  afficherSeule(0);
+  majBarre();
 })();
 </script>
 </body>

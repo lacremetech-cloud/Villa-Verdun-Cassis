@@ -10,6 +10,7 @@ index.html               landing
 styles.css               feuille de style (polices auto-hébergées incluses)
 main.js                  navigation, révélations, modale, galerie plein écran
 brochure/index.html      brochure A4 — 16 pages, autonome, imprimable en PDF
+                         (feuilletage : la page pivote sur son bord gauche)
 assets/images/           15 photographies du bien
 assets/fonts/            Cormorant Garamond & Jost (OFL 1.1), 20 fichiers woff2
 assets/brand/            logo Prodigio (source, mot-symbole blanc, mot-symbole encre)
