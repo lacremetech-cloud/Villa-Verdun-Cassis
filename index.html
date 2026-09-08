@@ -663,10 +663,48 @@
         Plans, prestations, photographies et prix. Transmise sous 24 heures ouvrées.
       </p>
     </div>
-    <div class="modal__form" id="brochureFormContainer">
-      <!-- TODO Systeme.io — le script du formulaire est injecte au premier clic (voir main.js).
-           En attente de l'identifiant du tunnel dedie a ce bien. -->
-      <div class="modal__spinner">Chargement du formulaire…</div>
+    <div class="modal__form">
+      <!-- Tunnel Systeme.io 44251769. Les attributs name sont ceux attendus par
+           Systeme.io : ne pas les renommer. Après validation, Systeme.io affiche
+           la page de remerciement du tunnel — c'est là qu'il faut pointer vers
+           la brochure. -->
+      <form class="form" method="post"
+            action="https://systeme.io/embedded/44251769/subscription">
+        <div class="form__row">
+          <div class="form__field">
+            <label class="form__label" for="fFirstName">Prénom</label>
+            <input class="form__input" id="fFirstName" type="text" name="first_name"
+                   autocomplete="given-name" required />
+          </div>
+          <div class="form__field">
+            <label class="form__label" for="fSurname">Nom</label>
+            <input class="form__input" id="fSurname" type="text" name="surname"
+                   autocomplete="family-name" required />
+          </div>
+        </div>
+
+        <div class="form__field">
+          <label class="form__label" for="fEmail">Adresse e-mail</label>
+          <input class="form__input" id="fEmail" type="email" name="email"
+                 autocomplete="email" inputmode="email" required />
+        </div>
+
+        <div class="form__field">
+          <label class="form__label" for="fPhone">Téléphone</label>
+          <input class="form__input" id="fPhone" type="tel" name="phone_number"
+                 autocomplete="tel" inputmode="tel" required />
+        </div>
+
+        <button class="btn btn--primary btn--lg btn--block" type="submit">
+          Recevoir la brochure
+        </button>
+
+        <p class="form__note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Vos coordonnées servent uniquement à vous transmettre ce dossier.
+          Aucun partage, aucun spam.
+        </p>
+      </form>
     </div>
   </div>
 </div>

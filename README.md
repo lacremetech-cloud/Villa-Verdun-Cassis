@@ -59,12 +59,34 @@ l'auteur, soit des images propres au bien.
 | Élément | Emplacement |
 |---|---|
 | Pixel Meta | `index.html`, commentaire `TODO Meta Pixel` |
-| Tunnel Systeme.io | `main.js`, constante `FORM_SCRIPT_URL` |
-| E-mail de contact | `main.js`, constante `CONTACT_EMAIL` |
-| Lien WhatsApp | `main.js`, constante `CONTACT_WHATSAPP` |
 | Coordonnées Prodigio | `brochure/index.html`, page 16 |
-| **Accès direct à la brochure** | `main.js`, constante `BROCHURE_PREVIEW_URL`. **Vider dès que le tunnel est en place** : tant qu'elle est renseignée, n'importe quel visiteur ouvre la brochure sans laisser ses coordonnées. |
+| Redirection du tunnel | Systeme.io, voir ci-dessous |
 | Mentions légales, confidentialité | pied de page, liens `#` |
+
+## Formulaire de capture
+
+Le bouton « Recevoir la brochure » ouvre une modale contenant un formulaire HTML
+classique posté vers le tunnel Systeme.io **44251769** :
+
+```
+POST https://systeme.io/embedded/44251769/subscription
+first_name · surname · email · phone_number
+```
+
+Les attributs `name` sont ceux attendus par Systeme.io : **ne pas les renommer**.
+Les types HTML ont en revanche été corrigés (`email` et `tel` au lieu de `text`),
+ce qui active la validation du navigateur et le bon clavier sur mobile.
+
+Après validation, le navigateur quitte le site pour la page de remerciement du
+tunnel. **C'est là qu'il faut pointer vers la brochure** :
+
+```
+https://<votre-domaine>/brochure/
+```
+
+Tant que cette redirection n'est pas configurée, le visiteur laisse ses
+coordonnées sans recevoir le dossier. L'accès direct provisoire qui existait
+auparavant a été retiré : le formulaire le remplace.
 
 ## Points à trancher
 

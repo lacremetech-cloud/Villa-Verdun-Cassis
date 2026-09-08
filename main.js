@@ -162,68 +162,15 @@
 
   /* =====================================================================
      MODALE BROCHURE
-     Le script du formulaire est injecté au premier clic seulement :
-     cela évite qu'iOS Safari déclenche la barre d'autocomplétion dès
-     le chargement de la page, et allège le premier rendu.
+     Le formulaire est un formulaire HTML classique posté vers Systeme.io
+     (tunnel 44251769), écrit directement dans la page. Aucun script tiers
+     à charger, donc aucune attente au premier clic.
      ===================================================================== */
   var modal = document.getElementById('brochureModal');
-  var formContainer = document.getElementById('brochureFormContainer');
   var openBtns = document.querySelectorAll('.js-open-brochure');
   var closeEls = document.querySelectorAll('.js-close-modal');
-  var formLoaded = false;
   var scrollY = 0;
   var lastFocused = null;
-
-  /* À RENSEIGNER AVANT MISE EN LIGNE
-     FORM_SCRIPT_URL : URL du script Systeme.io du tunnel dédié au bien.
-     CONTACT_EMAIL / CONTACT_WHATSAPP : coordonnées Prodigio.
-     Tant que ces valeurs sont vides, la modale affiche un message de repli
-     plutôt qu'un lien mort. */
-  var FORM_SCRIPT_URL   = '';
-  var CONTACT_EMAIL     = '';
-  var CONTACT_WHATSAPP  = '';
-
-  /* Accès direct à la brochure, le temps que le tunnel soit en place.
-     Tant que cette valeur est renseignée, n'importe quel visiteur peut
-     ouvrir la brochure sans laisser ses coordonnées : la vider dès que
-     FORM_SCRIPT_URL est configuré. */
-  var BROCHURE_PREVIEW_URL = 'brochure/';
-
-  function loadForm() {
-    if (formLoaded || !formContainer) return;
-    formLoaded = true;
-
-    if (!FORM_SCRIPT_URL) {
-      var html = '<p style="font-size:14.5px;line-height:1.7;color:#5E7386;margin:0 0 20px">' +
-        'Le formulaire de demande est en cours de mise en place. ' +
-        'En attendant, contactez-nous : la brochure vous est transmise sous 24 heures ouvrées.' +
-        '</p>';
-      if (CONTACT_EMAIL) {
-        html += '<a class="btn btn--primary btn--block" href="mailto:' + CONTACT_EMAIL +
-          '?subject=Brochure%20Villa%20Jean%20Jaures%20-%20Cassis">Demander la brochure par e-mail</a>';
-      }
-      if (CONTACT_WHATSAPP) {
-        html += '<a class="btn btn--ghost btn--block" style="margin-top:10px" target="_blank" ' +
-          'rel="noopener noreferrer" href="' + CONTACT_WHATSAPP + '">Écrire sur WhatsApp</a>';
-      }
-      if (BROCHURE_PREVIEW_URL) {
-        html += '<a class="btn btn--primary btn--block" target="_blank" rel="noopener noreferrer" ' +
-          'href="' + BROCHURE_PREVIEW_URL + '">Consulter la brochure</a>' +
-          '<p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;' +
-          'color:#93A5B2;margin:14px 0 0;text-align:center">Accès direct provisoire</p>';
-      } else if (!CONTACT_EMAIL && !CONTACT_WHATSAPP) {
-        html += '<p style="font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;' +
-          'color:#93A5B2;margin:0">Coordonnées à renseigner</p>';
-      }
-      formContainer.innerHTML = html;
-      return;
-    }
-
-    var script = document.createElement('script');
-    script.src = FORM_SCRIPT_URL;
-    script.async = true;
-    formContainer.appendChild(script);
-  }
 
   /* Verrouillage du scroll compatible iOS : on fige le body en position
      fixe et on mémorise la position pour la restaurer à la fermeture. */
@@ -243,7 +190,6 @@
   function openModal() {
     if (!modal) return;
     lastFocused = document.activeElement;
-    loadForm();
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
     lockScroll();
