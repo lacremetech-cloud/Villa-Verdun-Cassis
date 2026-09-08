@@ -63,6 +63,7 @@ l'auteur, soit des images propres au bien.
 | E-mail de contact | `main.js`, constante `CONTACT_EMAIL` |
 | Lien WhatsApp | `main.js`, constante `CONTACT_WHATSAPP` |
 | Coordonnées Prodigio | `brochure/index.html`, page 16 |
+| **Accès direct à la brochure** | `main.js`, constante `BROCHURE_PREVIEW_URL`. **Vider dès que le tunnel est en place** : tant qu'elle est renseignée, n'importe quel visiteur ouvre la brochure sans laisser ses coordonnées. |
 | Mentions légales, confidentialité | pied de page, liens `#` |
 
 ## Points à trancher

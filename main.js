@@ -183,6 +183,12 @@
   var CONTACT_EMAIL     = '';
   var CONTACT_WHATSAPP  = '';
 
+  /* Accès direct à la brochure, le temps que le tunnel soit en place.
+     Tant que cette valeur est renseignée, n'importe quel visiteur peut
+     ouvrir la brochure sans laisser ses coordonnées : la vider dès que
+     FORM_SCRIPT_URL est configuré. */
+  var BROCHURE_PREVIEW_URL = 'brochure/';
+
   function loadForm() {
     if (formLoaded || !formContainer) return;
     formLoaded = true;
@@ -200,7 +206,12 @@
         html += '<a class="btn btn--ghost btn--block" style="margin-top:10px" target="_blank" ' +
           'rel="noopener noreferrer" href="' + CONTACT_WHATSAPP + '">Écrire sur WhatsApp</a>';
       }
-      if (!CONTACT_EMAIL && !CONTACT_WHATSAPP) {
+      if (BROCHURE_PREVIEW_URL) {
+        html += '<a class="btn btn--primary btn--block" target="_blank" rel="noopener noreferrer" ' +
+          'href="' + BROCHURE_PREVIEW_URL + '">Consulter la brochure</a>' +
+          '<p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;' +
+          'color:#93A5B2;margin:14px 0 0;text-align:center">Accès direct provisoire</p>';
+      } else if (!CONTACT_EMAIL && !CONTACT_WHATSAPP) {
         html += '<p style="font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;' +
           'color:#93A5B2;margin:0">Coordonnées à renseigner</p>';
       }
