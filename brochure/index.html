@@ -203,7 +203,12 @@ body {
 img { display: block; max-width: 100%; }
 svg { display: block; }
 
-.brochure { max-width: 210mm; margin: 0 auto; position: relative; }
+.brochure {
+  /* Largeur et hauteur fixées en JavaScript : elles valent exactement la
+     taille visuelle de la page une fois réduite. overflow: hidden absorbe
+     la boîte de mise en page, qui reste à 210 x 297 mm. */
+  max-width: 100%; margin: 0 auto; position: relative; overflow: hidden;
+}
 
 .page {
   width: 210mm; height: 297mm; margin: 0 auto;
@@ -212,9 +217,11 @@ svg { display: block; }
   box-shadow: 0 16px 48px rgba(0,0,0,.42);
   padding: 20mm 18mm 24mm;
   display: none; page-break-after: always;
-  /* zoom plutôt que transform : il réduit aussi la hauteur de mise en page,
-     donc pas d'espace vide sous la page ni de défilement inutile. */
-  zoom: var(--scale);
+  /* transform plutôt que zoom : zoom n'est pas interprété de la même façon
+     par tous les navigateurs, et rognait la page sur iOS Safari. L'origine
+     est en haut à gauche pour que le conteneur, dimensionné en JavaScript,
+     coïncide exactement avec la page réduite. */
+  transform: scale(var(--scale)); transform-origin: top left;
 }
 .page.is-active { display: block; }
 .page:last-child { page-break-after: auto; }
@@ -400,13 +407,20 @@ svg { display: block; }
 .bar__btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; }
 .bar__count { font-size: 11px; letter-spacing: .2em; color: rgba(255,255,255,.8); padding: 0 10px; min-width: 74px; text-align: center; }
 .bar__sep { width: 1px; height: 20px; background: rgba(255,255,255,.16); margin: 0 2px; }
-.bar__link { font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #fff; text-decoration: none; padding: 0 12px; }
+.bar__link { font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #fff; text-decoration: none; padding: 0 12px; white-space: nowrap; }
+@media (max-width: 480px) {
+  .bar { padding: 6px 8px; gap: 4px; }
+  .bar__count { font-size: 10px; letter-spacing: .14em; padding: 0 6px; min-width: 62px; }
+  .bar__link { font-size: 9.5px; letter-spacing: .12em; padding: 0 8px; }
+  .bar__btn { width: 30px; height: 30px; }
+}
 .bar__link:hover { color: var(--accent-light); }
 
 @media print {
   html, body { background: #fff; }
   body { padding: 0; }
-  .page { display: block !important; box-shadow: none; margin: 0; zoom: 1; width: 210mm; height: 297mm; }
+  .brochure { width: auto !important; height: auto !important; overflow: visible !important; }
+  .page { display: block !important; box-shadow: none; margin: 0; transform: none !important; width: 210mm; height: 297mm; }
   .bar { display: none !important; }
   .page-wa, .wa-btn { background: #25D366 !important; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -922,18 +936,29 @@ svg { display: block; }
   var PAGE_H = 297 * PX_PAR_MM;
   var MARGE_HAUT = 20;
   var PLACE_BARRE = 118;
+  var MARGE_COTES = 32;   /* padding latéral du body : 1rem de chaque côté */
+  var brochure = document.getElementById('brochure');
+
+  /* Sur iOS, innerHeight compte la zone masquée par la barre d'outils du
+     navigateur : visualViewport donne la hauteur réellement visible. */
+  function hauteurVisible() {
+    return (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+  }
 
   function fit() {
-    var dispoL = Math.min(window.innerWidth - 32, PAGE_L);
-    var dispoH = window.innerHeight - MARGE_HAUT - PLACE_BARRE;
+    /* clientWidth plutôt qu'innerWidth : il exclut la barre de défilement. */
+    var dispoL = Math.min(document.documentElement.clientWidth - MARGE_COTES, PAGE_L);
+    var dispoH = hauteurVisible() - MARGE_HAUT - PLACE_BARRE;
     var s = Math.min(dispoL / PAGE_L, dispoH / PAGE_H, 1);
-    /* Fenêtre vraiment basse : plutôt que de rendre le texte illisible,
-       on revient à un ajustement en largeur et on laisse défiler. */
-    if (s < 0.35) s = dispoL / PAGE_L;
+    if (s < 0.3) s = dispoL / PAGE_L;   /* fenêtre minuscule : on laisse défiler */
     document.documentElement.style.setProperty('--scale', s.toFixed(4));
+    brochure.style.width  = Math.ceil(PAGE_L * s) + 'px';
+    brochure.style.height = Math.ceil(PAGE_H * s) + 'px';
   }
   fit();
   window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', fit);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', fit);
 
   document.getElementById('print').addEventListener('click', function (e) {
     e.preventDefault(); window.print();
