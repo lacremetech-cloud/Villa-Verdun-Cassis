@@ -3,39 +3,68 @@
 Site de présentation et brochure premium du bien, sur le modèle de
 [chaletfontromeu](https://github.com/lacremetech-cloud/chaletfontromeu).
 
-## État
-
-| | |
-|---|---|
-| Direction artistique | **en cours de choix** — trois propositions dans `direction-artistique/` |
-| Landing | à faire |
-| Brochure A4 | à faire |
-| Seconde langue | à arbitrer (anglais plutôt qu'espagnol) |
-
-## Le bien
-
-Maison de ville entièrement rénovée en 2026, boulevard Jean Jaurès, à quelques
-minutes à pied du port de Cassis. 160 m² habitables sur une parcelle de 400 m².
-
-- Réception de 50 m² — poutres à la française, chêne massif, belle hauteur sous plafond
-- Cuisine neuve entièrement équipée, vue dégagée
-- Rez-de-chaussée : une suite parentale
-- Étage : mezzanine aménageable en bureau ou chambre d'appoint
-- Niveau inférieur : trois suites parentales (l'une avec accès direct jardin et
-  piscine, l'autre avec terrasse privative), WC indépendant
-- Extérieur : piscine en béton armé, cuisine d'été
-- Garantie décennale et dommages-ouvrage
-- Chauffage : insert bois et climatisation · cave de 6 m² · parkings privatifs
-- Taxe foncière : 1 000 € / an
-
 ## Structure
 
 ```
-assets/images/          15 photographies du bien
-direction-artistique/   comparatif des trois directions (provisoire)
+index.html               landing
+styles.css               feuille de style (polices auto-hébergées incluses)
+main.js                  navigation, révélations, modale, galerie plein écran
+brochure/index.html      brochure A4 — 16 pages, autonome, imprimable en PDF
+assets/images/           15 photographies du bien
+assets/fonts/            Cormorant Garamond & Jost (OFL 1.1), 20 fichiers woff2
+assets/brand/            logo Prodigio (source, mot-symbole blanc, mot-symbole encre)
+direction-artistique/    archive : comparatif des trois directions proposées
 ```
+
+Site statique : aucun build, aucune dépendance. Déploiement direct sur Vercel.
+
+## Direction artistique
+
+Direction « Calanque », retenue parmi trois propositions. La palette est prélevée
+sur les photographies du bien : le bleu `#5C7488` est celui des meubles de cuisine
+et des volets. Typographie Cormorant Garamond (titres) et Jost (textes).
+
+Les polices sont servies depuis le dépôt — aucune requête vers Google Fonts,
+donc aucun transfert de données vers un tiers.
+
+## À renseigner avant mise en ligne
+
+| Élément | Emplacement |
+|---|---|
+| Pixel Meta | `index.html`, commentaire `TODO Meta Pixel` |
+| Tunnel Systeme.io | `main.js`, constante `FORM_SCRIPT_URL` |
+| E-mail de contact | `main.js`, constante `CONTACT_EMAIL` |
+| Lien WhatsApp | `main.js`, constante `CONTACT_WHATSAPP` |
+| Coordonnées Prodigio | `brochure/index.html`, page 16 |
+| Mentions légales, confidentialité | pied de page, liens `#` |
+
+## Points à trancher
+
+**Adresse.** L'état des risques et pollutions du 26/06/2026 (réf. 3739891) porte sur
+le **17 avenue de Verdun**, parcelle cadastrée **CL 58**. La description transmise
+indique **20 boulevard Jean Jaurès**. En attendant l'arbitrage, aucune adresse précise
+n'est publiée — ce qui correspond de toute façon à l'usage pour une diffusion
+confidentielle.
+
+**Descriptions divergentes.** Deux descriptions du bien ont été fournies. La plus
+récente fait foi dans les textes actuels :
+
+| | Première version | Version retenue |
+|---|---|---|
+| Surface | 160 m² | **170 m²** |
+| Chambres | 4 suites parentales | **4 chambres avec salle d'eau, dont 1 suite de plain-pied** |
+| Stationnement | places privatives | **1 place** |
+
+Repris de la première version faute de contradiction : parcelle de 400 m²,
+cave de 6 m², taxe foncière de 1 000 €, piscine en béton armé, garanties.
 
 ## Photographies manquantes
 
-Aucune vue de la cuisine d'été ni de la cave. Toutes les vues intérieures
-montrent la maison vide.
+Aucune vue de la cuisine d'été ni de la cave. Toutes les vues intérieures montrent
+la maison vide.
+
+## Logo
+
+Le PNG fourni présente un défaut : les lettres de la baseline se chevauchent
+(« IMMMOBILIER D'EXCEPTTIOON »). Seul le mot-symbole est donc utilisé ; la baseline
+est composée dans la typographie du site.
