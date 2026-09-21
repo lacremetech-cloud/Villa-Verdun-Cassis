@@ -73,7 +73,7 @@ l'auteur, soit des images propres au bien.
 
 ## Contact WhatsApp
 
-`https://wa.me/33625773592`, présent en pastille verte au pied de chaque page
+`https://wa.me/33668680407`, présent en pastille verte au pied de chaque page
 intérieure de la brochure, en bouton sur sa dernière page, et au pied du site.
 
 ## Formulaire de capture
